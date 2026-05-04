@@ -1,0 +1,550 @@
+/* COOPR hi-fi tokens — round 1 conversion from Direction 1 wireframes.
+   Baseline: warm-neutral light-first, flat elevation, moderate radius.
+   Source of truth: core/04-design-system.md */
+
+:root {
+  /* Surfaces — R8 LOCK-IN v3 (2026-04-29): IVORY WARMTH (W-D from tweaks
+     gallery). Almost-white but still warm. Replaces the warm-paper baseline;
+     pairs cleanly with the cocoa-shades-only Single Hue Depth palette below. */
+  --bg-base:     #fbfaf6;   /* page background — almost-white ivory */
+  --surface-1:   #fefdf9;   /* base cards */
+  --surface-2:   #f5f3ec;   /* nested / pressed */
+  --surface-3:   #ece9df;   /* input fields */
+  --surface-ink: #1a1815;   /* inverted surface for emphasis */
+
+  /* Foreground */
+  --fg-primary:    #1a1815;
+  --fg-secondary:  #5c5a55;
+  --fg-tertiary:   #8a8782;
+  --fg-on-accent:  #fdfcf9;
+  --fg-on-ink:     #f1efe9;
+
+  /* Borders — ivory-tuned to pair with --bg-base #fbfaf6 */
+  --border-subtle:  #ebe7dc;
+  --border-default: #d8d3c4;
+  --border-strong:  #b3aea2;
+
+  /* Accent — R8 LOCK-IN v3 (2026-04-29): SINGLE HUE DEPTH palette (P-H).
+     Cocoa shades only · depth via value not hue · monochromatic earth ·
+     maximum discipline. Replaces the clay primary committed in R8 v2.
+     Five colors total, all in the cocoa family — the loudest "loud" is still
+     warm-earth, never red or chromatic. Variants opt-in below via
+     [data-accent="ink"|"moss"|"cocoa"|...]. */
+  --accent-primary:        #5a371f;   /* deep cocoa */
+  --accent-primary-hover:  #48291a;
+  --accent-primary-press:  #371e13;
+  --accent-soft:           #e8dcc8;   /* tinted ivory surface */
+  --accent-ring:           rgba(90, 55, 31, 0.25);
+
+  /* Tone — Single Hue Depth: every tone is a cocoa shade, depth via value */
+  --tone-success:    #5a4a26;
+  --tone-success-bg: #e8e2d1;
+  --tone-warning:    #a07346;
+  --tone-warning-bg: #f0e3d4;
+  --tone-info:       #806750;
+  --tone-info-bg:    #ece4dc;
+  --tone-danger:     #7a3a24;
+  --tone-danger-bg:  #eed8d0;
+
+  /* Type scale */
+  --text-xs:   12px;
+  --text-sm:   13px;
+  --text-base: 14px;
+  --text-md:   16px;
+  --text-lg:   18px;
+  --text-xl:   22px;
+  --text-2xl:  28px;
+  --text-3xl:  36px;
+
+  /* Type — R8 baseline: Literata serif (Google Books, screen-optimized) +
+     Inter Tight sans + JetBrains Mono. Newsreader / Plus Jakarta retained
+     as fallbacks for legacy contexts. */
+  --font-sans:    'Inter Tight', 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+  --font-serif:   'Literata', 'Newsreader', 'Charter', 'Iowan Old Style', Georgia, serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  /* Spacing */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-8:  48px;
+  --space-12: 72px;
+
+  /* Radius */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  20px;
+
+  /* Shadow — R8 LOCK-IN v3 (2026-04-29): NONE (SH-B from tweaks gallery).
+     Flat editorial · zero elevation · cards live by border alone.
+     Reinforces the print-magazine character of the locked palette + warmth. */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+}
+
+/* Accent variants — opt-in via <body data-accent="ink"|"moss"|"cocoa">.
+   The :root default is the EDITORIAL MAGAZINE palette: clay primary +
+   the existing warm-earth tones below (R8 lock-in v2, 2026-04-28).
+   Kept for: legacy round 1/2/3 references, side-by-side comparison,
+   and the tweaks gallery (data/prototypes/.../tweaks.html). */
+[data-accent="ink"] {
+  --accent-primary:        #1a1815;
+  --accent-primary-hover:  #3a3631;
+  --accent-primary-press:  #000000;
+  --accent-soft:           #ebe8e0;
+  --accent-ring:           rgba(26, 24, 21, 0.20);
+}
+[data-accent="moss"] {
+  --accent-primary:        #5b7a4c;
+  --accent-primary-hover:  #4d6940;
+  --accent-primary-press:  #3f5734;
+  --accent-soft:           #e3ebdc;
+  --accent-ring:           rgba(91, 122, 76, 0.25);
+}
+[data-accent="cocoa"] {
+  --accent-primary:        #6b4226;
+  --accent-primary-hover:  #5a371f;
+  --accent-primary-press:  #48291a;
+  --accent-soft:           #e8dcc8;
+  --accent-ring:           rgba(107, 66, 38, 0.25);
+}
+/* Note: the legacy [data-accent-proposed="true"] alias was retired in R8 v3
+   (2026-04-29). With Single Hue Depth (cocoa-only) as :root, the historical
+   moss mapping no longer matched the lock direction; legacy round 1/2/3 HTML
+   files now inherit the :root baseline directly. */
+
+/* Reset within hi-fi screens */
+.hf, .hf * { box-sizing: border-box; font-feature-settings: "ss01", "ss02"; }
+.hf {
+  font-family: var(--font-sans);
+  color: var(--fg-primary);
+  font-size: var(--text-base);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hf-num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* Topbar */
+.hf-topbar {
+  height: 52px;
+  padding: 0 var(--space-5);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-1);
+  gap: var(--space-5);
+}
+
+.hf-logo {
+  width: 24px; height: 24px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-ink);
+  color: var(--fg-on-ink);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.hf-tab {
+  height: 52px;
+  padding: 0 0;
+  display: inline-flex; align-items: center;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--fg-secondary);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: default;
+}
+.hf-tab.is-active {
+  color: var(--fg-primary);
+  font-weight: 600;
+  border-bottom-color: var(--fg-primary);
+}
+
+.hf-cmdk {
+  height: 30px;
+  padding: 0 10px;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  font-size: 12px;
+  color: var(--fg-tertiary);
+}
+
+.hf-key {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 18px; min-width: 18px; padding: 0 4px;
+  border-radius: 3px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  color: var(--fg-secondary);
+}
+
+.hf-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c98b6b, #8c5a3d);
+  border: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+/* Sub-tabs */
+.hf-subtabs {
+  height: 42px;
+  padding: 0 var(--space-5);
+  display: flex; align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-1);
+  gap: var(--space-5);
+}
+
+.hf-subtab {
+  height: 42px;
+  display: inline-flex; align-items: center;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--fg-secondary);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: default;
+}
+.hf-subtab.is-active {
+  color: var(--fg-primary);
+  font-weight: 600;
+  border-bottom-color: var(--fg-primary);
+}
+
+/* Side rails */
+.hf-rail {
+  width: 200px;
+  padding: var(--space-4) var(--space-2);
+  border-right: 1px solid var(--border-subtle);
+  background: var(--surface-1);
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+}
+
+.hf-rail-label {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-tertiary);
+  font-weight: 600;
+  padding: 0 10px 8px;
+}
+
+.hf-rail-item {
+  height: 30px;
+  padding: 0 10px;
+  display: flex; align-items: center; gap: 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--fg-secondary);
+  font-weight: 500;
+  cursor: default;
+}
+.hf-rail-item.is-active {
+  background: var(--surface-2);
+  color: var(--fg-primary);
+  font-weight: 600;
+}
+.hf-rail-item .hf-rail-meta {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--fg-tertiary);
+  font-weight: 500;
+}
+
+/* Cards */
+.hf-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.hf-card-tight { padding: var(--space-3); }
+
+.hf-card-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.hf-card-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--fg-primary);
+  letter-spacing: -0.005em;
+}
+
+.hf-card-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-tertiary);
+  font-weight: 600;
+}
+
+/* Buttons */
+.hf-btn {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid transparent;
+  cursor: default;
+  font-family: inherit;
+}
+.hf-btn-primary {
+  background: var(--accent-primary);
+  color: var(--fg-on-accent);
+}
+.hf-btn-secondary {
+  background: var(--surface-1);
+  border-color: var(--border-default);
+  color: var(--fg-primary);
+}
+.hf-btn-ghost {
+  background: transparent;
+  color: var(--fg-secondary);
+}
+.hf-btn-sm { height: 28px; padding: 0 10px; font-size: 12px; }
+
+/* Inputs */
+.hf-input {
+  height: 36px;
+  padding: 0 12px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--fg-primary);
+  font-family: inherit;
+  display: flex; align-items: center;
+}
+
+/* Tags / chips */
+.hf-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--fg-secondary);
+}
+.hf-tag-accent { background: var(--accent-soft); border-color: transparent; color: var(--accent-primary-press); }
+.hf-tag-success { background: var(--tone-success-bg); border-color: transparent; color: var(--tone-success); }
+.hf-tag-warning { background: var(--tone-warning-bg); border-color: transparent; color: var(--tone-warning); }
+.hf-tag-info    { background: var(--tone-info-bg); border-color: transparent; color: var(--tone-info); }
+
+/* Status dot */
+.hf-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* Composer (scoped) */
+.hf-composer-bar {
+  display: flex; align-items: center; gap: 10px;
+  height: 42px;
+  padding: 0 14px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+}
+.hf-composer-bar:hover { border-color: var(--border-strong); }
+
+.hf-composer-hero {
+  width: 720px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.hf-send {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: var(--fg-on-accent);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* Chat message blocks */
+.hf-chat-msg {
+  display: flex; gap: 12px;
+  padding: var(--space-3) 0;
+}
+.hf-chat-role {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-tertiary);
+  font-weight: 600;
+  width: 56px;
+  flex-shrink: 0;
+  padding-top: 3px;
+}
+
+/* Chart bits */
+.hf-bar { background: var(--accent-primary); border-radius: 2px 2px 0 0; }
+.hf-bar-soft { background: var(--accent-soft); border-radius: 2px 2px 0 0; }
+.hf-bar-ink { background: var(--fg-primary); border-radius: 2px 2px 0 0; }
+
+/* Sparkline-friendly container */
+.hf-spark { height: 36px; display: flex; align-items: end; gap: 2px; }
+.hf-spark > i { display: block; width: 4px; background: var(--accent-primary); border-radius: 1px; opacity: 0.85; }
+
+/* Editorial typography helpers */
+.hf-rule {
+  height: 1px;
+  background: var(--fg-primary);
+  width: 100%;
+}
+.hf-rule-thick {
+  height: 3px;
+  background: var(--fg-primary);
+}
+.hf-rule-double {
+  height: 6px;
+  border-top: 1px solid var(--fg-primary);
+  border-bottom: 1px solid var(--fg-primary);
+}
+.hf-dropcap::first-letter {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 3.4em;
+  float: left;
+  line-height: 0.85;
+  margin: 0.08em 0.08em 0 -0.02em;
+  color: var(--accent-primary);
+}
+.hf-headline {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--fg-primary);
+}
+.hf-deck {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--fg-secondary);
+}
+.hf-byline {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-tertiary);
+  font-weight: 500;
+}
+.hf-folio {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-tertiary);
+}
+
+/* Divider */
+.hf-divider { height: 1px; background: var(--border-subtle); }
+
+/* Workspace area */
+.hf-shell {
+  width: 1440px; height: 900px;
+  background: var(--bg-base);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+.hf-body { flex: 1; display: flex; min-height: 0; }
+.hf-content { flex: 1; min-width: 0; padding: var(--space-5); overflow: hidden; }
+
+/* Lists */
+.hf-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+}
+.hf-row + .hf-row { border-top: 1px solid var(--border-subtle); border-radius: 0; }
+
+/* Annotation pill (used outside the screen frames) */
+.hf-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--fg-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* R8 v3 — global typographic treatment locks (2026-04-29).
+   HW-E "Display" headline weight: italic-serif headlines render at 600 with
+   tighter tracking — magazine-cover italic feel. Targets the .hf-headline
+   class plus h1/h2 elements that surfaces use for hero titles.
+   ET-B "Tight" eyebrow tracking: small mono-uppercase labels that use
+   .hf-byline / .hf-folio land at 0.06em (closer to readable, less typewriter).
+   Inline-style eyebrows stay at their declared values. */
+.hf-headline,
+.hf-headline span,
+h1,
+h2 {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+.hf-byline,
+.hf-folio {
+  letter-spacing: 0.06em;
+}
+
+/* ─── cv-fade-in ───────────────────────────────────────────
+   Used by interactive surfaces (Library Series / Patterns) to
+   smooth the right-pane swap when a left-rail selection changes.
+   Pair with React `key={focusId}` on the wrapper so the element
+   remounts and the keyframe replays on every selection. */
+@keyframes cv-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── hf-skeleton-shimmer ──────────────────────────────────
+   Loading skeleton sweep used by state-variant heroes
+   (HF_SkeletonHero in hifi-state-variants.jsx). Background gradient
+   sweeps left-to-right at 1500ms ease-in-out infinite, sized 200%
+   so the moving band passes through the visible 100% block once
+   per cycle. Tokens drive the gradient stops so accent themes
+   (clay / moss / dark) all read correctly. */
+@keyframes hf-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

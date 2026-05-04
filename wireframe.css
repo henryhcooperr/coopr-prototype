@@ -1,0 +1,391 @@
+/* ─────────────────────────────────────────────────────────────
+   wireframe.css — sketchy low-fi vocabulary for the shell explore.
+   B&W + a single accent, handwritten type for annotations,
+   Jakarta for structural labels so hierarchy reads at a glance.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --wf-ink:        #1a1a1a;
+  --wf-ink-2:      #4a4a4a;
+  --wf-ink-3:      #8a8a8a;
+  --wf-ink-4:      #b8b8b8;
+  --wf-paper:      #fafaf7;
+  --wf-paper-2:    #f2f0ea;
+  --wf-paper-3:    #e8e5dd;
+  --wf-line:       #cfcbc2;
+  --wf-line-2:     #a8a49a;
+  --wf-accent:     #0d9488;         /* COOPR teal — single tweakable accent */
+  --wf-accent-soft:rgba(13,148,136,0.10);
+  --wf-note:       #d97706;         /* pencil-orange for annotations */
+  --wf-note-soft:  rgba(217,119,6,0.10);
+
+  --wf-radius:     4px;
+  --wf-radius-lg:  8px;
+  --wf-density:    1;                /* 0.85 tight, 1 default, 1.15 loose */
+
+  --wf-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --wf-hand: 'Kalam', 'Caveat', 'Patrick Hand', cursive;
+  --wf-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* sketchy outlines — look hand-drawn without being cutesy */
+.wf-sketch {
+  border: 1.5px solid var(--wf-ink-2);
+  border-radius: var(--wf-radius);
+  background: var(--wf-paper);
+}
+.wf-sketch-thin { border-width: 1px; border-color: var(--wf-line-2); }
+.wf-sketch-dashed { border-style: dashed; border-color: var(--wf-ink-3); }
+
+/* fill variants */
+.wf-fill-1 { background: var(--wf-paper); }
+.wf-fill-2 { background: var(--wf-paper-2); }
+.wf-fill-3 { background: var(--wf-paper-3); }
+.wf-fill-ink { background: var(--wf-ink); color: var(--wf-paper); }
+.wf-fill-accent { background: var(--wf-accent-soft); border-color: var(--wf-accent); color: var(--wf-accent); }
+
+/* type */
+.wf-label { font-family: var(--wf-sans); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wf-ink-3); font-weight: 600; }
+.wf-title { font-family: var(--wf-sans); font-weight: 600; color: var(--wf-ink); }
+.wf-body  { font-family: var(--wf-sans); color: var(--wf-ink-2); font-size: 11px; }
+.wf-meta  { font-family: var(--wf-sans); color: var(--wf-ink-3); font-size: 10px; }
+.wf-hand  { font-family: var(--wf-hand); color: var(--wf-note); }
+
+/* annotation pin — numbered callout */
+.wf-pin {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--wf-hand);
+  font-size: 13px;
+  color: var(--wf-note);
+  background: var(--wf-note-soft);
+  border: 1px solid var(--wf-note);
+  border-radius: 99px;
+  padding: 1px 7px 1px 5px;
+  white-space: nowrap;
+  z-index: 3;
+  pointer-events: none;
+}
+.wf-pin-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px; height: 14px;
+  background: var(--wf-note);
+  color: #fff;
+  border-radius: 50%;
+  font-family: var(--wf-sans);
+  font-size: 9px;
+  font-weight: 700;
+  font-family: var(--wf-sans);
+}
+
+/* squiggly divider */
+.wf-squiggle {
+  height: 4px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 4' preserveAspectRatio='none'><path d='M0 2 Q5 0 10 2 T20 2 T30 2 T40 2' stroke='%23a8a49a' stroke-width='1' fill='none'/></svg>");
+  background-repeat: repeat-x;
+  background-size: 40px 4px;
+}
+
+/* hatching fill — signals "placeholder content" */
+.wf-hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 4px,
+    var(--wf-line) 4px,
+    var(--wf-line) 5px
+  );
+}
+.wf-hatch-fine {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 3px,
+    var(--wf-line) 3px,
+    var(--wf-line) 3.5px
+  );
+}
+
+/* text-block placeholder — three stacked lines */
+.wf-textlines {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.wf-textlines > span {
+  display: block;
+  height: 5px;
+  background: var(--wf-line);
+  border-radius: 2px;
+}
+.wf-textlines > span:nth-child(2) { width: 85%; }
+.wf-textlines > span:nth-child(3) { width: 60%; }
+
+/* reusable box sketch */
+.wf-box {
+  border: 1.25px solid var(--wf-ink-2);
+  border-radius: var(--wf-radius);
+  background: var(--wf-paper);
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: var(--wf-ink-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wf-box-sm { font-size: 10px; }
+
+/* nav row item look */
+.wf-nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px;
+  border-radius: var(--wf-radius);
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: var(--wf-ink-2);
+}
+.wf-nav-item.is-active {
+  background: var(--wf-ink);
+  color: var(--wf-paper);
+}
+.wf-nav-item .wf-glyph {
+  width: 10px; height: 10px; border: 1.25px solid currentColor; border-radius: 2px; flex: 0 0 10px;
+}
+
+/* top tab */
+.wf-tab {
+  padding: 6px 12px;
+  border-radius: 99px;
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: var(--wf-ink-2);
+  background: transparent;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.wf-tab.is-active {
+  background: var(--wf-paper);
+  border-color: var(--wf-ink-2);
+  color: var(--wf-ink);
+  font-weight: 600;
+}
+
+/* chat composer shell */
+.wf-composer {
+  border: 1.5px solid var(--wf-ink-2);
+  border-radius: 12px;
+  background: var(--wf-paper);
+  padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  color: var(--wf-ink-3);
+}
+.wf-composer .wf-composer-chips {
+  display: flex; gap: 6px; align-items: center;
+}
+.wf-composer .wf-chip {
+  font-size: 10px; padding: 2px 8px; border: 1px solid var(--wf-line-2); border-radius: 99px; color: var(--wf-ink-2);
+}
+.wf-composer .wf-chip-accent {
+  border-color: var(--wf-accent);
+  color: var(--wf-accent);
+  background: var(--wf-accent-soft);
+}
+
+/* message bubble */
+.wf-msg-user, .wf-msg-coopr {
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-family: var(--wf-sans);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.wf-msg-user {
+  background: var(--wf-paper-2);
+  border: 1px solid var(--wf-line);
+  color: var(--wf-ink);
+  align-self: flex-end;
+  max-width: 75%;
+}
+.wf-msg-coopr {
+  background: transparent;
+  color: var(--wf-ink);
+  max-width: 85%;
+}
+
+/* artboard scaffolding — the outer chrome of each wireframe screen */
+.wf-screen {
+  position: relative;
+  width: 100%; height: 100%;
+  background: var(--wf-paper);
+  display: flex;
+  overflow: hidden;
+  font-family: var(--wf-sans);
+  color: var(--wf-ink);
+}
+.wf-screen-hero {
+  background:
+    linear-gradient(var(--wf-paper-2), var(--wf-paper-2)) padding-box;
+}
+
+/* shell regions */
+.wf-sidebar {
+  flex: 0 0 auto;
+  background: var(--wf-paper-2);
+  border-right: 1px solid var(--wf-line);
+  padding: 14px 10px;
+  display: flex; flex-direction: column; gap: 10px;
+  min-width: 0;
+}
+.wf-sidebar-narrow { width: 44px; padding: 14px 6px; align-items: center; }
+.wf-sidebar-default { width: 176px; }
+.wf-sidebar-wide { width: 220px; }
+
+.wf-topbar {
+  flex: 0 0 auto;
+  height: 44px;
+  border-bottom: 1px solid var(--wf-line);
+  background: var(--wf-paper);
+  padding: 0 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.wf-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--wf-paper);
+  overflow: hidden;
+}
+
+/* creator badge / switcher */
+.wf-creator {
+  display: flex; align-items: center; gap: 6px;
+  padding: 3px 8px 3px 4px;
+  border: 1px solid var(--wf-line-2);
+  border-radius: 99px;
+  font-family: var(--wf-sans);
+  font-size: 10px;
+  color: var(--wf-ink-2);
+}
+.wf-creator-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--wf-accent);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+}
+
+/* keyboard key */
+.wf-key {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; padding: 1px 5px;
+  border: 1px solid var(--wf-line-2);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  font-family: var(--wf-mono);
+  font-size: 9px;
+  color: var(--wf-ink-2);
+  background: var(--wf-paper);
+}
+
+/* a small column header "•" for grouped regions */
+.wf-section-header {
+  font-family: var(--wf-sans);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wf-ink-3);
+  font-weight: 600;
+  padding: 0 10px;
+  margin-bottom: 4px;
+}
+
+/* chat rail items */
+.wf-rail-item {
+  padding: 6px 10px;
+  font-size: 10px;
+  color: var(--wf-ink-2);
+  font-family: var(--wf-sans);
+  border-radius: var(--wf-radius);
+  display: flex; justify-content: space-between;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wf-rail-item.is-active { background: var(--wf-accent-soft); color: var(--wf-ink); }
+
+/* chart placeholder — simple bar/line */
+.wf-chart {
+  display: flex; align-items: flex-end; gap: 3px;
+  height: 40px;
+}
+.wf-chart > span {
+  flex: 1;
+  background: var(--wf-accent);
+  opacity: 0.7;
+  border-radius: 1px 1px 0 0;
+  min-height: 4px;
+}
+
+/* legend dot */
+.wf-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--wf-ink-3);
+  display: inline-block;
+}
+.wf-dot.is-accent { background: var(--wf-accent); }
+.wf-dot.is-note { background: var(--wf-note); }
+
+/* pinned / anchored footer chat on intel pages */
+.wf-anchor-chat {
+  border-top: 1px solid var(--wf-line);
+  padding: 10px 14px 12px;
+  display: flex; gap: 8px; align-items: center;
+  background: var(--wf-paper-2);
+}
+
+/* ─ tag / legend chips used in the rationale panels ─ */
+.wf-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--wf-sans); font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid var(--wf-line-2);
+  color: var(--wf-ink-2);
+}
+.wf-tag-panel { background: #eef6fb; border-color: #8cbcd6; color: #1e4b66; }
+.wf-tag-route { background: #f5efe2; border-color: #c7a867; color: #7b5f1c; }
+.wf-tag-hybrid { background: #efe7f5; border-color: #a784c4; color: #59376e; }
+.wf-tag-risk-low  { background: #e8f1ec; border-color: #6fa982; color: #2a5a3a; }
+.wf-tag-risk-med  { background: #faf1df; border-color: #c69a3b; color: #6a4e0f; }
+.wf-tag-risk-high { background: #f6e3df; border-color: #c06453; color: #6e2a1d; }
+
+/* utility */
+.wf-row { display: flex; gap: 8px; align-items: center; }
+.wf-col { display: flex; flex-direction: column; gap: 8px; }
+.wf-grow { flex: 1 1 0; min-width: 0; }
+
+/* artboard edge label — shown inside an artboard at the top */
+.wf-ab-edge {
+  position: absolute;
+  top: 10px; left: 14px;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--wf-sans);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wf-ink-3);
+  font-weight: 600;
+  z-index: 2;
+  pointer-events: none;
+}
+.wf-ab-edge::before {
+  content: '';
+  display: inline-block;
+  width: 14px; height: 1px; background: var(--wf-ink-3);
+}

@@ -1,0 +1,4 @@
+{
+  "_comment": "Locked token overrides. Edit by axis name (e.g. accent, fontHeadline, density, warmth, radius). Master.html reads this on boot. Tweaks gallery 'Lock in' writes to localStorage['cb-locked-tokens']; this file wins on conflict.",
+  "accent": "moss"
+}

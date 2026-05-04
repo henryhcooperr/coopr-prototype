@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>COOPR · Master · layout ↔ interactive</title>
+  <meta name="viewport" content="width=1440, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,ital,wght@7..72,0,400;7..72,0,500;7..72,0,600;7..72,0,700;7..72,1,400;7..72,1,500&family=Inter+Tight:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,0,600;6..72,0,700;6..72,1,400;6..72,1,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="hifi.css" />
+  <style>
+    html, body { margin: 0; padding: 0; min-height: 100%; background: #fbfaf6; font-family: 'Inter Tight', 'Plus Jakarta Sans', system-ui, sans-serif; color: #1a1815; }
+    #root { min-height: 100%; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- ── DATA + DESIGN-CANVAS + SHARED CHROME ─────────────────────────── -->
+  <script src="hifi-data.js"></script>
+  <script type="text/babel" src="design-canvas.jsx"></script>
+  <script type="text/babel" src="hifi-chrome.jsx"></script>
+  <script type="text/babel" src="hifi-data-chrome.jsx"></script>
+  <script type="text/babel" src="hifi-charts.jsx"></script>
+  <script type="text/babel" src="hifi-screens.jsx"></script>
+  <script type="text/babel" src="hifi-chat.jsx"></script>
+  <script type="text/babel" src="hifi-tokens.jsx"></script>
+  <script type="text/babel" src="hifi-shell.jsx"></script>
+
+  <!-- ── F2 · state variants (loading / empty / error heroes) ────────── -->
+  <script type="text/babel" src="hifi-state-variants.jsx"></script>
+
+  <!-- ── B2 · multi-select primitive (action bar + checkbox) ─────────── -->
+  <script type="text/babel" src="hifi-multi-select-bar.jsx"></script>
+
+  <!-- ── B1 · drag affordance primitives (DragHandle / DragGhost / DropMarker / DragStatusPill) -->
+  <script type="text/babel" src="hifi-drag-affordance.jsx"></script>
+
+  <!-- ── B3 · context-menu + sort-popover + filter-chip primitives ──── -->
+  <script type="text/babel" src="hifi-context-menu.jsx"></script>
+
+  <!-- ── R3 surfaces (unchanged from R4) ─────────────────────────────── -->
+  <script type="text/babel" src="hifi-home.jsx"></script>
+  <script type="text/babel" src="hifi-home-command.jsx"></script>
+  <script type="text/babel" src="hifi-home-rail.jsx"></script>
+  <script type="text/babel" src="hifi-studio.jsx"></script>
+  <script type="text/babel" src="hifi-insights-data.jsx"></script>
+  <script type="text/babel" src="hifi-intel.jsx"></script>
+  <script type="text/babel" src="hifi-inbox.jsx"></script>
+  <script type="text/babel" src="hifi-inbox-comments-r2.jsx"></script>
+  <script type="text/babel" src="hifi-inbox-dms-r2.jsx"></script>
+  <script type="text/babel" src="hifi-more.jsx"></script>
+  <script type="text/babel" src="hifi-calendar-r2.jsx"></script>
+  <script type="text/babel" src="hifi-settings-r2.jsx"></script>
+  <script type="text/babel" src="hifi-modal-settings.jsx"></script>
+  <script type="text/babel" src="hifi-studio-r3.jsx"></script>
+  <script type="text/babel" src="hifi-cliplab.jsx"></script>
+  <script type="text/babel" src="hifi-r3-audit.jsx"></script>
+
+  <!-- ── R5 · Studio Docs override (loads after R3; reassigns HF_StudioDocFull) -->
+  <script type="text/babel" src="hifi-studio-r5-body.jsx"></script>
+  <script type="text/babel" src="hifi-studio-r5-panel.jsx"></script>
+  <script type="text/babel" src="hifi-studio-r5-home.jsx"></script>
+  <script type="text/babel" src="hifi-studio-r5-shell.jsx"></script>
+
+  <!-- ── R6 · Docs chrome state machine (Wave 2 / I1) ────────────────── -->
+  <script type="text/babel" src="hifi-docs-r6-chrome.jsx?v=1777800008"></script>
+
+  <!-- ── R6 · Docs Wave 3 surfaces (load after R5 shell, dep-ordered) ── -->
+  <script type="text/babel" src="hifi-docs-r6-editor-core.jsx?v=1777800008"></script>
+  <script type="text/babel" src="hifi-docs-r6-slash.jsx?v=1777800008"></script>
+  <script type="text/babel" src="hifi-docs-r6-blocks-coopr.jsx?v=1777800008"></script>
+  <script type="text/babel" src="hifi-docs-r6-image-studio.jsx?v=1777800008"></script>
+  <script type="text/babel" src="hifi-docs-r6-media-drawer.jsx?v=1777800008"></script>
+  <script type="text/babel" src="hifi-docs-r6-canvas.jsx?v=1777800008"></script>
+  <script type="text/babel" src="hifi-docs-r6-home.jsx?v=1777800008"></script>
+
+  <!-- ── R7 · Interactive blocks expansion (6 new component blocks) ──── -->
+  <script type="text/babel" src="hifi-docs-r7-blocks.jsx?v=1777800008"></script>
+
+  <!-- ── R8 · Single-vessel canvas + inline heading tools + discoverability + scripted-hook/transcript blocks (Claude Design inbound 2026-05-04) -->
+  <script type="text/babel" src="hifi-docs-r8-chrome.jsx?v=1777800013"></script>
+  <script type="text/babel" src="hifi-docs-r8-discoverability.jsx?v=1777800013"></script>
+  <script type="text/babel" src="hifi-docs-r8-canvas.jsx?v=1777800013"></script>
+  <script type="text/babel" src="hifi-docs-r8-blocks.jsx?v=1777800013"></script>
+
+  <!-- ── R9 · Cohesion fleet (chrome density · livemode · card preview · tweaks channel · editorial header) -->
+  <!-- Load BEFORE hifi-master.jsx so the boot-apply useEffect can call window.cohesionR9TokensChannel.bootApply(). HF_DocCardPreview + HF_EditorialHeader are read at render time, so order here vs hifi-docs-r6-home.jsx doesn't matter for those — both fire when HF_Master mounts the tree. -->
+  <script type="text/babel" src="hifi-cohesion-r9-tweaks-channel.jsx?v=1777801000"></script>
+  <script type="text/babel" src="hifi-cohesion-r9-livemode.jsx?v=1777801000"></script>
+  <script type="text/babel" src="hifi-cohesion-r9-card-preview.jsx?v=1777801000"></script>
+  <script type="text/babel" src="hifi-cohesion-r9-surface-rhythm.jsx?v=1777801000"></script>
+
+  <!-- ── R4 library upgrade — visuals primitives FIRST ───────────────── -->
+  <script type="text/babel" src="hifi-r4-lib-visuals.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-catalog.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-catalog-grid.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-detail.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-detail-analysis.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-pairing.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-patterns.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-series.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-timeline.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-compare.jsx"></script>
+
+  <!-- ── R4 in-thread block library — shared registry FIRST ──────────── -->
+  <script type="text/babel" src="hifi-r4-blocks-shared.jsx"></script>
+  <script type="text/babel" src="hifi-r4-chat-demo-primitives.jsx"></script>
+  <script type="text/babel" src="hifi-r4-chat-state-primitives.jsx"></script>
+  <script type="text/babel" src="hifi-r4-outcome-loop.jsx"></script>
+  <script type="text/babel" src="hifi-r4-draft-edit-loop.jsx"></script>
+  <script type="text/babel" src="hifi-r4-blocks-A-B-C.jsx"></script>
+  <script type="text/babel" src="hifi-r4-blocks-D-E-F-G.jsx"></script>
+  <script type="text/babel" src="hifi-r4-blocks-H-I-J.jsx"></script>
+  <script type="text/babel" src="hifi-r4-blocks-K-L.jsx"></script>
+  <script type="text/babel" src="hifi-r4-blocks-M-N.jsx"></script>
+  <script type="text/babel" src="hifi-r4-blocks-O-P.jsx"></script>
+  <script type="text/babel" src="hifi-r4-blocks-Q.jsx"></script>
+  <script type="text/babel" src="hifi-r4-blocks-thread-demo.jsx"></script>
+
+  <!-- ── R4 search overlay (used by chrome ⌘K) ───────────────────────── -->
+  <script type="text/babel" src="hifi-search.jsx"></script>
+  <script type="text/babel" src="hifi-modal-search.jsx"></script>
+
+  <!-- ── MASTER · drafted surfaces (Home/Threads, Home/Activity, Intel/Trends) -->
+  <script type="text/babel" src="hifi-home-threads.jsx"></script>
+  <script type="text/babel" src="hifi-home-activity.jsx"></script>
+  <script type="text/babel" src="hifi-intel-trends.jsx"></script>
+
+  <!-- ── B4 · shared tooltip primitive (must load before interactive view) -->
+  <script type="text/babel" src="hifi-tooltip.jsx"></script>
+
+  <!-- ── MASTER · registry + router + views + entry  ────────────────── -->
+  <script type="text/babel" src="hifi-master-registry.jsx"></script>
+  <script type="text/babel" src="hifi-master-router.jsx"></script>
+  <script type="text/babel" src="hifi-modal-toast.jsx"></script>
+  <script type="text/babel" src="hifi-modal-compose.jsx"></script>
+  <script type="text/babel" src="hifi-modal-new-project.jsx"></script>
+  <script type="text/babel" src="hifi-modal-new-doc.jsx"></script>
+  <script type="text/babel" src="hifi-modal-confirm.jsx"></script>
+  <script type="text/babel" src="hifi-master-layout-view.jsx"></script>
+  <script type="text/babel" src="hifi-master-interactive-view.jsx"></script>
+  <script type="text/babel" src="hifi-master.jsx?v=1777800008"></script>
+  <script type="text/babel" src="app-hifi-master.jsx"></script>
+</body>
+</html>

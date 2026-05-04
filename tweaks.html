@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Hi-fi · Tweaks · variant gallery</title>
+  <meta name="viewport" content="width=1440, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Originals: T-A Newsreader/Plus Jakarta/JetBrains Mono · T-B Fraunces/Inter Tight/IBM Plex Mono · T-C Source Serif 4/Geist
+       Cleaner+: T-D Spectral · T-E Literata · T-F Crimson Pro · T-G Lora/DM Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,0,600;6..72,0,700;6..72,1,400;6..72,1,500&family=JetBrains+Mono:wght@400;500;600&family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,500;9..144,0,600;9..144,1,400;9..144,1,500&family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,ital,wght@8..60,0,400;8..60,0,500;8..60,0,600;8..60,1,400;8..60,1,500&family=Geist:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Literata:opsz,ital,wght@7..72,0,400;7..72,0,500;7..72,0,600;7..72,1,400;7..72,1,500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="hifi.css" />
+  <script>
+    if (window.location.protocol === 'file:') {
+      window.location.replace('http://localhost:8765/tweaks.html' + window.location.search + window.location.hash);
+    }
+  </script>
+  <style>
+    html, body { margin: 0; padding: 0; min-height: 100%; background: #f7f5f0; font-family: 'Plus Jakarta Sans', sans-serif; color: #1a1815; }
+    #root { min-height: 100%; }
+  </style>
+</head>
+<body data-accent-proposed="true">
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- Surface switching · loads all 4 control surfaces:
+       HF_InsightsOverview · HF_HomeChat · HF_R4_LibraryCatalogGrid · HF_StudioWorkspace -->
+  <script src="hifi-data.js"></script>
+  <script type="text/babel" src="hifi-chrome.jsx"></script>
+  <script type="text/babel" src="hifi-data-chrome.jsx"></script>
+  <script type="text/babel" src="hifi-charts.jsx"></script>
+  <script type="text/babel" src="hifi-screens.jsx"></script>
+  <script type="text/babel" src="hifi-chat.jsx"></script>
+  <script type="text/babel" src="hifi-shell.jsx"></script>
+  <script type="text/babel" src="hifi-home.jsx"></script>
+  <script type="text/babel" src="hifi-home-command.jsx"></script>
+  <script type="text/babel" src="hifi-home-rail.jsx"></script>
+  <script type="text/babel" src="hifi-more.jsx"></script>
+
+  <!-- R4 library deps · visuals MUST load first -->
+  <script type="text/babel" src="hifi-r4-lib-visuals.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-catalog.jsx"></script>
+  <script type="text/babel" src="hifi-r4-lib-catalog-grid.jsx"></script>
+
+  <!-- R9 · tweaks → master channel (loads before hifi-tweaks so the Lock In master button can call window.cohesionR9TokensChannel.write) -->
+  <script type="text/babel" src="hifi-cohesion-r9-tweaks-channel.jsx?v=1777801000"></script>
+
+  <!-- Tweaks gallery — bump version query when shipping new tweak axes/rules
+       so Babel-standalone refetches the JSX rather than serving from cache. -->
+  <script type="text/babel" src="hifi-tweaks.jsx?v=12"></script>
+  <script type="text/babel" src="app-hifi-tweaks.jsx?v=11"></script>
+</body>
+</html>

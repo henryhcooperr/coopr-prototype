@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>COOPR · prototype</title>
+  <meta name="viewport" content="width=1440, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,ital,wght@7..72,0,400;7..72,0,500;7..72,0,600;7..72,0,700;7..72,1,400;7..72,1,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --surface-0: #fbfaf6;
+      --surface-1: #fefdf9;
+      --surface-2: #f4f0e5;
+      --fg-primary: #1a1815;
+      --fg-secondary: #4a4640;
+      --fg-tertiary: #8a8478;
+      --border-subtle: #ebe7dc;
+      --border-default: #d4cdb8;
+      --accent-primary: #5a6a3a;
+      --accent-soft: rgba(90, 106, 58, 0.10);
+      --fg-on-accent: #fefdf9;
+    }
+    html, body {
+      margin: 0; padding: 0; min-height: 100vh;
+      background: var(--surface-0);
+      color: var(--fg-primary);
+      font-family: 'Inter Tight', system-ui, sans-serif;
+    }
+    body {
+      display: flex; flex-direction: column;
+      min-height: 100vh;
+    }
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 28px 28px;
+      flex: 1;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 36px;
+    }
+    .brand-mark {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--fg-primary); color: var(--surface-1);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'Literata', serif; font-style: italic;
+      font-size: 16px; font-weight: 600; line-height: 1;
+    }
+    .brand-word {
+      font-family: 'Inter Tight', system-ui, sans-serif;
+      font-weight: 700; letter-spacing: 0.06em;
+      font-size: 14px; color: var(--fg-primary);
+    }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--fg-tertiary);
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-family: 'Literata', serif;
+      font-style: italic; font-weight: 600;
+      font-size: 48px; line-height: 1.06;
+      margin: 0 0 14px;
+      letter-spacing: -0.02em;
+    }
+    .lede {
+      font-family: 'Literata', serif;
+      font-size: 17px; line-height: 1.55;
+      color: var(--fg-secondary);
+      margin: 0 0 44px;
+      max-width: 60ch;
+    }
+    .lede em { font-style: italic; color: var(--fg-tertiary); }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    a.card {
+      display: flex; flex-direction: column;
+      padding: 22px 22px 24px;
+      background: var(--surface-1);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      text-decoration: none;
+      color: var(--fg-primary);
+      transition: background 140ms cubic-bezier(0.2,0.7,0.2,1),
+                  border-color 140ms cubic-bezier(0.2,0.7,0.2,1),
+                  transform 140ms cubic-bezier(0.2,0.7,0.2,1);
+      position: relative;
+    }
+    a.card::before {
+      content: '';
+      position: absolute;
+      left: 22px; top: -1px;
+      width: 28px; height: 3px;
+      background: var(--accent-primary);
+    }
+    a.card:hover {
+      background: var(--surface-2);
+      border-color: var(--border-default);
+      transform: translateY(-1px);
+    }
+    .card-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--fg-tertiary);
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-family: 'Literata', serif;
+      font-style: italic; font-weight: 600;
+      font-size: 22px; line-height: 1.15;
+      margin: 0 0 10px;
+      letter-spacing: -0.005em;
+    }
+    .card-desc {
+      font-family: 'Literata', serif;
+      font-size: 14px; line-height: 1.5;
+      color: var(--fg-secondary);
+      margin: 0;
+    }
+    .card-arrow {
+      margin-top: 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--fg-tertiary);
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color 140ms;
+    }
+    a.card:hover .card-arrow {
+      color: var(--accent-primary);
+    }
+    .meta {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 0.04em;
+      color: var(--fg-tertiary);
+      display: flex; flex-wrap: wrap; gap: 6px 16px;
+    }
+    .meta .k { font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase; }
+    .meta .v { color: var(--fg-secondary); }
+    .note {
+      margin-top: 18px;
+      font-family: 'Literata', serif;
+      font-style: italic; font-size: 13px; line-height: 1.55;
+      color: var(--fg-tertiary);
+      max-width: 60ch;
+    }
+    .note kbd {
+      font-family: 'JetBrains Mono', monospace;
+      font-style: normal; font-size: 10.5px; font-weight: 600;
+      padding: 1px 5px;
+      border: 1px solid var(--border-default);
+      border-radius: 3px;
+      color: var(--fg-secondary);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">
+      <span class="brand-mark">C</span>
+      <span class="brand-word">COOPR</span>
+    </div>
+
+    <div class="eyebrow">Chat-first v2 · hi-fi prototype</div>
+    <h1>Three ways in.</h1>
+    <p class="lede">Babel-standalone React loaded in-browser. <em>Built for desktop · 1440 × 900 surfaces · best on a real screen, not a phone.</em></p>
+
+    <div class="grid">
+      <a class="card" href="master.html">
+        <div class="card-eyebrow">Master · interactive</div>
+        <div class="card-title">Master prototype</div>
+        <p class="card-desc">Eight workspaces, the new Docs surface (R6 + R7 + R8), every interactive screen.</p>
+        <span class="card-arrow">Open →</span>
+      </a>
+
+      <a class="card" href="master.html#layout">
+        <div class="card-eyebrow">Master · layout</div>
+        <div class="card-title">Layout view</div>
+        <p class="card-desc">Every surface laid out at scale on one canvas. Press <kbd style="font-family:'JetBrains Mono',monospace;font-size:10px;padding:1px 5px;border:1px solid var(--border-default);border-radius:3px;">L</kbd> to toggle.</p>
+        <span class="card-arrow">Open →</span>
+      </a>
+
+      <a class="card" href="tweaks.html">
+        <div class="card-eyebrow">Tweaks · variants</div>
+        <div class="card-title">Token gallery</div>
+        <p class="card-desc">Variant gallery — accent, type, density, motion. Live token comparisons.</p>
+        <span class="card-arrow">Open →</span>
+      </a>
+    </div>
+
+    <p class="note">
+      Open the docs surface from Master · click any card · the doc-mode chrome reconfigures around the editorial vessel. Press <kbd>/</kbd> on any line for blocks, click the gutter <kbd>+</kbd>, or just type. <kbd>?</kbd> shows shortcuts (R8). <kbd>L</kbd> toggles layout view from anywhere.
+    </p>
+
+    <div class="meta">
+      <span><span class="k">Build</span> <span class="v">docs-r8 · 2026-05-04</span></span>
+      <span><span class="k">Waves</span> <span class="v">R3 · R4 · R5 · R6 · R7 · R8</span></span>
+      <span><span class="k">Stack</span> <span class="v">React 18.3 · Babel standalone · no build step</span></span>
+      <span><span class="k">Canvas</span> <span class="v">1440 × 900</span></span>
+    </div>
+  </main>
+</body>
+</html>
