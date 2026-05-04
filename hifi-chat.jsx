@@ -280,11 +280,36 @@ function ChatHeader({ active = 'studio' }) {
 }
 
 // ─── Composer — cleaner, single visual gesture row ────────────
-function ChatComposer({ placeholder = 'Draft anything, or ask about your work.', model = 'Sonnet', scope = 'Library + Audience', docked = false }) {
+function ChatComposer({ placeholder = 'Draft anything, or ask about your work.', model = 'Sonnet', scope = 'Library + Audience', docked = false, threadId = null }) {
+  const gated = !!(threadId && window.JOB_REGISTRY && window.JOB_REGISTRY.gatedThreads().has(threadId));
+  const runningJob = gated
+    ? window.JOB_REGISTRY.listRunning().find((j) => j.gatesThreadId === threadId)
+    : null;
+
+  // Re-render every second while gated so the elapsed pill stays fresh.
+  // Only run the ticker when gated — there's no visible state to refresh otherwise.
+  const [, setTick] = React.useState(0);
+  React.useEffect(() => {
+    if (!gated) return;
+    const t = window.setInterval(() => setTick((n) => n + 1), 1000);
+    return () => window.clearInterval(t);
+  }, [gated]);
+
+  function fmtElapsed(ms) {
+    const s = Math.max(0, Math.floor(ms / 1000));
+    const m = Math.floor(s / 60);
+    const r = s - m * 60;
+    return `${m}:${r < 10 ? '0' : ''}${r}`;
+  }
+
+  const placeholderText = gated
+    ? `Composer locked while ${runningJob ? runningJob.label : 'a task'} is running`
+    : placeholder;
+
   return (
-    <div style={{
+    <div data-locked={gated ? '1' : '0'} style={{
       width: docked ? '100%' : 720,
-      background: 'var(--surface-1)',
+      background: gated ? 'var(--surface-2)' : 'var(--surface-1)',
       border: '1px solid var(--border-default)',
       borderRadius: 14,
       boxShadow: docked ? 'none' : '0 1px 0 rgba(26,24,21,0.02), 0 12px 32px -20px rgba(26,24,21,0.10)',
@@ -292,7 +317,7 @@ function ChatComposer({ placeholder = 'Draft anything, or ask about your work.',
     }}>
       {/* Input area */}
       <div style={{ padding: '18px 20px 12px', minHeight: 60 }}>
-        <span style={{ fontSize: 15.5, color: 'var(--fg-tertiary)', lineHeight: 1.5 }}>{placeholder}</span>
+        <span style={{ fontSize: 15.5, color: gated ? 'var(--fg-secondary)' : 'var(--fg-tertiary)', fontStyle: gated ? 'italic' : 'normal', fontFamily: gated ? 'var(--font-serif)' : 'inherit', lineHeight: 1.5 }}>{placeholderText}</span>
       </div>
       {/* Action row — left: scope only · right: model + send */}
       <div style={{ padding: '8px 12px 8px 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -303,6 +328,7 @@ function ChatComposer({ placeholder = 'Draft anything, or ask about your work.',
           fontSize: 11.5, color: 'var(--fg-secondary)', fontWeight: 500,
           background: 'transparent',
           borderRadius: 999,
+          opacity: gated ? 0.5 : 1,
         }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--accent-primary)' }}>＠</span>
           {scope}
@@ -312,22 +338,37 @@ function ChatComposer({ placeholder = 'Draft anything, or ask about your work.',
         <span style={{
           width: 22, height: 22, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 14, color: 'var(--fg-tertiary)', cursor: 'default',
+          opacity: gated ? 0.4 : 1,
         }}>＋</span>
         <span style={{ flex: 1 }} />
+        {/* Locked status pill — visible only when gated */}
+        {gated && runningJob && (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '0 10px', height: 22, borderRadius: 999,
+            background: 'var(--surface-3)',
+            fontFamily: 'var(--font-mono)', fontSize: 9.5, letterSpacing: '.08em', textTransform: 'uppercase',
+            color: 'var(--fg-secondary)', fontWeight: 700,
+          }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-primary)', animation: 'blk-step-pulse 1.4s ease-in-out infinite' }} />
+            {fmtElapsed(Date.now() - runningJob.startedAt)} elapsed
+          </span>
+        )}
         {/* Voice */}
         <span style={{
           width: 22, height: 22, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 12, color: 'var(--fg-tertiary)',
+          opacity: gated ? 0.4 : 1,
         }}>◉</span>
         {/* Model — text only */}
-        <span style={{ fontSize: 11.5, color: 'var(--fg-secondary)', fontWeight: 500, padding: '0 6px' }}>
+        <span style={{ fontSize: 11.5, color: 'var(--fg-secondary)', fontWeight: 500, padding: '0 6px', opacity: gated ? 0.5 : 1 }}>
           {model}
         </span>
         {/* Send */}
         <span style={{
           width: 30, height: 30,
-          background: 'var(--accent-primary)',
-          color: 'var(--fg-on-accent)',
+          background: gated ? 'var(--surface-3)' : 'var(--accent-primary)',
+          color: gated ? 'var(--fg-tertiary)' : 'var(--fg-on-accent)',
           borderRadius: 999,
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 13, fontWeight: 600,

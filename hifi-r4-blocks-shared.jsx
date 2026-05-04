@@ -165,16 +165,25 @@ function BlockLifecycleBody({ id, name, state, onState }) {
     );
   }
   if (state === 'error') {
+    const job = (window.JOB_REGISTRY && window.JOB_REGISTRY.get(`job-${id}`)) || null;
+    const failedIdx = job ? job.steps.findIndex((s) => s.state === 'error') : -1;
     return (
       <div className="blk blk-lifecycle-panel" data-lifecycle="error">
-        <Eyebrow left="FIG · ERROR" right={id} />
+        <Eyebrow left={`${id} · ERROR`} right={job && failedIdx >= 0 ? `step ${failedIdx + 1} of ${job.steps.length}` : ''} />
         <div className="blk-state-error">
           <Icon name="warning" size={18} />
-          <p className="serif-it">This block could not load from the current thread context.</p>
+          <p className="serif-it">{job && job.errorMessage ? job.errorMessage : 'This block could not load from the current thread context.'}</p>
         </div>
+        {job && (
+          <>
+            <StepJournal steps={job.steps} />
+            <div className="blk-progress" data-tone="danger"><div style={{ width: `${Math.round((job.steps.filter((s) => s.state === 'done').length / job.steps.length) * 100)}%` }} /></div>
+          </>
+        )}
         <div className="blk-footer">
-          <FooterChip icon="retry" label="Retry" accent onClick={() => onState('loading')} />
-          <FooterChip icon="box-x" label="Narrow scope" muted />
+          <FooterChip icon="retry" label={failedIdx >= 0 ? `Retry from step ${failedIdx + 1}` : 'Retry'} accent onClick={() => onState('running')} />
+          {job && job.steps.some((s) => s.state === 'done') && <FooterChip icon="box-x" label="Use partial" muted />}
+          <FooterChip icon="cross" label="Discard run" muted onClick={() => onState('idle')} />
         </div>
       </div>
     );
@@ -271,6 +280,24 @@ function RunningPanel({ id, name, jobId, onState }) {
         <FooterChip kind="discard" muted onClick={() => window.JOB_REGISTRY.cancel(jobId)} />
         <FooterChip kind="more" />
       </div>
+    </div>
+  );
+}
+
+function CancelledStrip({ jobId, onState }) {
+  const job = (window.JOB_REGISTRY && window.JOB_REGISTRY.get(jobId)) || null;
+  const elapsed = job && job.endedAt && job.startedAt ? Math.floor((job.endedAt - job.startedAt) / 1000) : 0;
+  const m = Math.floor(elapsed / 60); const r = elapsed - m * 60;
+  const stepLabel = job ? `step ${job.activeStep + 1} of ${job.steps.length}` : '';
+  return (
+    <div className="blk-cancelled-strip" data-lifecycle="cancelled">
+      <span className="blk-cancelled-dot" aria-hidden="true" />
+      <span className="blk-cancelled-text">Cancelled · {`${m}:${r < 10 ? '0' : ''}${r}`} · {stepLabel}</span>
+      <span className="blk-cancelled-actions">
+        <button type="button" className="blk-cancelled-action" onClick={() => onState('running')}>expand</button>
+        <span className="blk-cancelled-sep">·</span>
+        <button type="button" className="blk-cancelled-action accent" onClick={() => onState('running')}>re-run</button>
+      </span>
     </div>
   );
 }
@@ -558,7 +585,12 @@ function ensureR4BStyles() {
     .blk-state-empty p, .blk-state-error p { margin: 0; color: var(--fg-secondary); font-size: 14px; line-height: 1.45; }
     .blk-state-error p { color: var(--tone-danger); }
     .blk-progress { position: relative; height: 6px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
-    .blk-progress > div { height: 100%; }
+    .blk-progress > div { height: 100%; background: var(--accent-primary); border-radius: 2px; }
+    .blk-progress[data-tone="danger"] > div { background: var(--tone-danger); }
+    .blk-progress[data-tone="success"] > div { background: var(--tone-success); }
+    [data-lifecycle="error"] .blk-eyebrow .l { color: var(--tone-danger); }
+    [data-lifecycle="success"] .blk-eyebrow .l { color: var(--tone-success); }
+    [data-lifecycle="warn"] .blk-eyebrow .l { color: var(--tone-warning); }
     .blk-avatar-disc { border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 10px; font-weight: 700; }
     .blk-channel-chip { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 16px; border-radius: 3px; font-family: var(--font-mono); font-size: 9px; font-weight: 800; letter-spacing: 0.04em; border: 1px solid var(--border-subtle); color: var(--fg-primary); }
     .blk-channel-chip.yt { background: var(--tone-danger-bg); } .blk-channel-chip.ig { background: var(--accent-soft); } .blk-channel-chip.tt { background: var(--surface-ink); color: var(--fg-on-ink); } .blk-channel-chip.neutral { background: var(--surface-2); }
@@ -578,6 +610,13 @@ function ensureR4BStyles() {
     .blk-step[data-state="skipped"] { color: var(--fg-tertiary); text-decoration: line-through; }
     .blk-step-meta { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-tertiary); font-weight: 600; }
     @keyframes blk-step-pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+    .blk-cancelled-strip { display: grid; grid-template-columns: 14px 1fr auto; gap: 10px; align-items: center; padding: 10px 14px; background: var(--surface-2); border: 1px solid var(--border-subtle); border-radius: 6px; }
+    .blk-cancelled-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--fg-tertiary); justify-self: center; }
+    .blk-cancelled-text { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-secondary); font-weight: 700; }
+    .blk-cancelled-actions { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-tertiary); font-weight: 700; }
+    .blk-cancelled-action { background: transparent; border: 0; padding: 2px 4px; cursor: pointer; color: var(--fg-tertiary); font: inherit; letter-spacing: inherit; text-transform: inherit; font-weight: inherit; }
+    .blk-cancelled-action.accent { color: var(--accent-primary); }
+    .blk-cancelled-sep { color: var(--fg-tertiary); }
     .blk-frame .mono, .r4b-thread-demo .mono { font-family: var(--font-mono); } .blk-frame .serif-it, .r4b-thread-demo .serif-it { font-family: var(--font-serif); font-style: italic; } .blk-frame .serif, .r4b-thread-demo .serif { font-family: var(--font-serif); } .blk-frame .num, .r4b-thread-demo .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
     .r4b-thread-demo { padding: 34px 48px 96px; max-width: 1180px; margin: 0 auto; }
     .r4b-thread-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; border-bottom: 3px solid var(--fg-primary); padding-bottom: 22px; margin-bottom: 28px; }

@@ -925,6 +925,22 @@ function MasterCornerMenu() {
               }
             }}
           />
+          <MenuItem
+            label="Blocks · reference"
+            icon={(
+              <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true" style={{ flexShrink: 0 }}>
+                <rect x="1.5" y="1.5" width="3.5" height="3.5" stroke="currentColor" fill="none" strokeWidth="1.2" />
+                <rect x="7" y="1.5" width="3.5" height="3.5" stroke="currentColor" fill="none" strokeWidth="1.2" />
+                <rect x="1.5" y="7" width="3.5" height="3.5" stroke="currentColor" fill="none" strokeWidth="1.2" />
+                <rect x="7" y="7" width="3.5" height="3.5" stroke="currentColor" fill="none" strokeWidth="1.2" />
+              </svg>
+            )}
+            onClick={() => {
+              if (window.HF_BlocksOverlay && typeof window.HF_BlocksOverlay.open === 'function') {
+                window.HF_BlocksOverlay.open();
+              }
+            }}
+          />
           <span style={{ height: 1, background: 'var(--border-subtle)', margin: '4px 4px' }} />
           <MenuItem label="Press ? for shortcuts" isStatic />
         </div>

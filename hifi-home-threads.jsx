@@ -197,6 +197,24 @@ function HT_KindGlyph({ kind }) {
 
 function HT_ThreadList({ threads, activeGroup, activeId, onPick }) {
   const filtered = threads.filter(t => t.group === activeGroup);
+  const runningJobsByThread = (() => {
+    const map = new Map();
+    if (!window.JOB_REGISTRY) return map;
+    window.JOB_REGISTRY.listRunning().forEach((j) => {
+      if (j.gatesThreadId) {
+        if (!map.has(j.gatesThreadId)) map.set(j.gatesThreadId, []);
+        map.get(j.gatesThreadId).push(j);
+      }
+    });
+    return map;
+  })();
+  const hasRunning = runningJobsByThread.size > 0;
+  const [, setHTTick] = React.useState(0);
+  React.useEffect(() => {
+    if (!hasRunning) return;
+    const t = window.setInterval(() => setHTTick((n) => n + 1), 1000);
+    return () => window.clearInterval(t);
+  }, [hasRunning]);
   return (
     <main style={{ flex: 1, minWidth: 0, overflow: 'auto', padding: '32px 36px 56px', background: 'var(--bg-base)' }}>
       {/* Editorial header */}
@@ -249,8 +267,27 @@ function HT_ThreadList({ threads, activeGroup, activeId, onPick }) {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
-                <HT_Mono size={10.5} color="var(--fg-secondary)">{th.lastTouched}</HT_Mono>
-                <HT_Mono size={9.5} color="var(--fg-tertiary)">{th.turns} turns</HT_Mono>
+                {(() => {
+                  const jobs = runningJobsByThread.get(th.id) || [];
+                  if (jobs.length > 0) {
+                    const elapsed = Math.floor((Date.now() - jobs[0].startedAt) / 1000);
+                    const m = Math.floor(elapsed / 60); const r = elapsed - m * 60;
+                    return (
+                      <>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '2px 8px', borderRadius: 999, background: 'var(--accent-soft)', color: 'var(--accent-primary-press)', fontFamily: 'var(--font-mono)', fontSize: 9.5, letterSpacing: '.08em', textTransform: 'uppercase', fontWeight: 700 }}>
+                          <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-primary)', animation: 'blk-step-pulse 1.4s ease-in-out infinite' }} />running {`${m}:${r < 10 ? '0' : ''}${r}`}
+                        </span>
+                        <HT_Mono size={9.5} color="var(--fg-tertiary)">step {jobs[0].activeStep + 1} of {jobs[0].steps.length}</HT_Mono>
+                      </>
+                    );
+                  }
+                  return (
+                    <>
+                      <HT_Mono size={10.5} color="var(--fg-secondary)">{th.lastTouched}</HT_Mono>
+                      <HT_Mono size={9.5} color="var(--fg-tertiary)">{th.turns} turns</HT_Mono>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           );

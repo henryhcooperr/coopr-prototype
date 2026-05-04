@@ -140,6 +140,13 @@
   <script type="text/babel" src="hifi-search.jsx"></script>
   <script type="text/babel" src="hifi-modal-search.jsx"></script>
 
+  <!-- ── Blocks Reference overlay (2026-05-03) ──────────────────────
+       Self-mounting full-bleed overlay scrolling all 17 in-thread block
+       families. Loads AFTER hifi-r4-blocks-*.jsx so HF_R4B_BlockFamily*
+       symbols are registered before the overlay renders them. Opens via
+       R9 corner menu item "Blocks · reference". -->
+  <script type="text/babel" src="hifi-blocks-overlay.jsx?v=1777802100"></script>
+
   <!-- ── MASTER · drafted surfaces (Home/Threads, Home/Activity, Intel/Trends) -->
   <script type="text/babel" src="hifi-home-threads.jsx"></script>
   <script type="text/babel" src="hifi-home-activity.jsx"></script>

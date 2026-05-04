@@ -80,6 +80,7 @@ function HfShellTopbar({ workspace = 'home', right = null }) {
       {/* Right utilities */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 130, justifyContent: 'flex-end' }}>
         {right || <>
+          <HF_ActivityTrayPill />
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
             height: 26, padding: '0 10px',
@@ -139,6 +140,111 @@ function HfShellSubtabs({ workspace, active, right = null }) {
       <div style={{ flex: 1 }} />
       {right}
     </div>
+  );
+}
+
+// ─── Activity tray (running tasks indicator) ─────────────────
+function HF_ActivityTrayPill() {
+  const [open, setOpen] = React.useState(false);
+  const [, setTick] = React.useState(0);
+  const masterState = (window.useMasterState && window.useMasterState()) || null;
+
+  const running = (window.JOB_REGISTRY && window.JOB_REGISTRY.listRunning()) || [];
+  const hasRunning = running.length > 0;
+
+  React.useEffect(() => {
+    if (!hasRunning) return;
+    const t = window.setInterval(() => setTick((n) => n + 1), 1000);
+    return () => window.clearInterval(t);
+  }, [hasRunning]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    function onDocClick(e) {
+      const root = document.getElementById('hf-activity-tray-root');
+      if (!root || root.contains(e.target)) return;
+      setOpen(false);
+    }
+    function onKey(e) { if (e.key === 'Escape') setOpen(false); }
+    document.addEventListener('mousedown', onDocClick);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDocClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  if (!hasRunning) return null;
+
+  const first = running[0];
+  const elapsed = Math.floor((Date.now() - first.startedAt) / 1000);
+  const m = Math.floor(elapsed / 60); const r = elapsed - m * 60;
+
+  function fmtElapsed(startedAt) {
+    const e = Math.floor((Date.now() - startedAt) / 1000);
+    const mm = Math.floor(e / 60); const rr = e - mm * 60;
+    return `${mm}:${rr < 10 ? '0' : ''}${rr}`;
+  }
+
+  return (
+    <span id="hf-activity-tray-root" style={{ position: 'relative', display: 'inline-flex' }}>
+      <button type="button" onClick={() => setOpen(!open)} style={{
+        display: 'inline-flex', alignItems: 'center', gap: 8, height: 26, padding: '0 12px',
+        borderRadius: 999,
+        background: 'var(--accent-soft)',
+        border: '1px solid transparent',
+        color: 'var(--accent-primary-press)',
+        fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '.08em', textTransform: 'uppercase', fontWeight: 700,
+        cursor: 'pointer',
+      }}>
+        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-primary)', animation: 'blk-step-pulse 1.4s ease-in-out infinite' }} />
+        {running.length} running · {`${m}:${r < 10 ? '0' : ''}${r}`}
+      </button>
+      {open && (
+        <div role="dialog" style={{
+          position: 'absolute', right: 0, top: 'calc(100% + 8px)',
+          width: 360, background: 'var(--surface-1)',
+          border: '1px solid var(--border-default)',
+          borderRadius: 12, padding: 6,
+          display: 'flex', flexDirection: 'column', gap: 2,
+          zIndex: 1000,
+          boxShadow: '0 10px 32px rgba(26,24,21,0.08)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', padding: '10px 12px 4px',
+            fontFamily: 'var(--font-mono)', fontSize: 9.5, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--fg-tertiary)', fontWeight: 700,
+          }}>
+            <span>Running · {running.length}</span>
+          </div>
+          {running.map((j, i) => {
+            const step = j.steps[j.activeStep];
+            return (
+              <button type="button" key={j.id} onClick={() => {
+                if (j.gatesThreadId && masterState && typeof masterState.setActiveSurface === 'function') {
+                  masterState.setActiveSurface('home', 'threads');
+                }
+                setOpen(false);
+              }} style={{
+                display: 'grid', gridTemplateColumns: '1fr auto', gap: 10, alignItems: 'baseline',
+                padding: '10px 12px', borderRadius: 8, background: 'transparent', border: 0,
+                borderTop: i > 0 ? '1px solid var(--border-subtle)' : 0,
+                textAlign: 'left', cursor: 'pointer',
+                width: '100%',
+              }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 500, fontSize: 14.5, color: 'var(--fg-primary)', letterSpacing: '-.005em' }}>{j.label}</div>
+                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11.5, color: 'var(--fg-tertiary)', marginTop: 2 }}>
+                    {step ? step.name : '—'}
+                  </div>
+                </div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--fg-secondary)', fontWeight: 700, alignSelf: 'center' }}>
+                  {fmtElapsed(j.startedAt)}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </span>
   );
 }
 
