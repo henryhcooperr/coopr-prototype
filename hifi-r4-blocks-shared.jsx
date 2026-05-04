@@ -131,6 +131,9 @@ function FooterChip({ kind, icon, label, target, muted = false, accent = false, 
 }
 
 function BlockLifecycleBody({ id, name, state, onState }) {
+  if (state === 'running') {
+    return <RunningPanel id={id} name={name} jobId={`job-${id}`} onState={onState} />;
+  }
   if (state === 'loading') {
     return (
       <div className="blk blk-lifecycle-panel" data-lifecycle="loading">
@@ -176,13 +179,106 @@ function BlockLifecycleBody({ id, name, state, onState }) {
       </div>
     );
   }
+  if (state === 'cancelled') {
+    return <CancelledStrip id={id} jobId={`job-${id}`} onState={onState} />;
+  }
   return null;
+}
+
+function StepJournal({ steps }) {
+  function fmt(ms) {
+    if (ms == null || isNaN(ms)) return '—';
+    const s = Math.max(0, Math.floor(ms / 1000));
+    const m = Math.floor(s / 60);
+    const r = s - m * 60;
+    return `${m}:${r < 10 ? '0' : ''}${r}`;
+  }
+  function liveDuration(step) {
+    if (step.state === 'pending') return null;
+    if (step.startedAt == null) return null;
+    const end = step.state === 'active' ? Date.now() : (step.endedAt || step.startedAt);
+    return end - step.startedAt;
+  }
+  return (
+    <ul className="blk-step-list" role="list">
+      {steps.map((step, i) => (
+        <li key={i} className="blk-step" data-state={step.state}>
+          <span className="blk-step-marker" aria-hidden="true" />
+          <span className="blk-step-name">{step.name}</span>
+          <span className="blk-step-meta">{fmt(liveDuration(step))}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function RunningPanel({ id, name, jobId, onState }) {
+  const [job, setJob] = React.useState(() => (window.JOB_REGISTRY ? window.JOB_REGISTRY.get(jobId) : null));
+  const [, setTick] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!window.JOB_REGISTRY) return;
+    const unsub = window.JOB_REGISTRY.subscribe(jobId, (j) => setJob(j));
+    return unsub;
+  }, [jobId]);
+
+  React.useEffect(() => {
+    const t = window.setInterval(() => setTick((n) => n + 1), 500);
+    return () => window.clearInterval(t);
+  }, []);
+
+  React.useEffect(() => {
+    if (!job && window.JOB_REGISTRY) {
+      window.JOB_REGISTRY.start(jobId, name, [
+        { name: 'Tracked competitor',           simDurationMs: 4000 },
+        { name: 'Resolved profile metadata',    simDurationMs: 7000 },
+        { name: 'Pulling last 90d of reels',    simDurationMs: 240000 },
+        { name: 'Scoring against your library', simDurationMs: 18000 },
+        { name: 'Building comparison',          simDurationMs: 9000 },
+      ]);
+    }
+  }, [job, jobId, name]);
+
+  if (!job) {
+    return (
+      <div className="blk blk-lifecycle-panel" data-lifecycle="running">
+        <Eyebrow left={`${id} · STARTING`} right="—" />
+      </div>
+    );
+  }
+  if (job.state === 'done')      onState && window.setTimeout(() => onState('idle'), 0);
+  if (job.state === 'cancelled') onState && window.setTimeout(() => onState('cancelled'), 0);
+  if (job.state === 'error')     onState && window.setTimeout(() => onState('error'), 0);
+
+  const elapsedMs = job.startedAt ? (Date.now() - job.startedAt) : 0;
+  const total = job.steps.length;
+  const doneCount = job.steps.filter((s) => s.state === 'done').length;
+  const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+
+  function fmt(ms) {
+    const s = Math.max(0, Math.floor(ms / 1000));
+    const m = Math.floor(s / 60);
+    const r = s - m * 60;
+    return `${m}:${r < 10 ? '0' : ''}${r}`;
+  }
+
+  return (
+    <div className="blk blk-lifecycle-panel" data-lifecycle="running">
+      <Eyebrow left={`${id} · RUNNING · ${fmt(elapsedMs)}`} right={`step ${job.activeStep + 1} of ${total}`} />
+      <StepJournal steps={job.steps} />
+      <div className="blk-progress"><div style={{ width: `${pct}%` }} /></div>
+      <div className="blk-footer">
+        <FooterChip kind="discard" muted onClick={() => window.JOB_REGISTRY.cancel(jobId)} />
+        <FooterChip kind="more" />
+      </div>
+    </div>
+  );
 }
 
 function Frame({ id, name, purpose, target, span = 6, children, initialState = 'idle' }) {
   const [blockState, setBlockState] = React.useState(initialState);
   const targetLabel = normalizeBlockTarget(target);
-  const states = ['idle', 'loading', 'empty', 'error'];
+  const states = ['idle', 'loading', 'empty', 'error', 'running', 'cancelled'];
   return (
     <div className={`blk-frame cell-${span}`} id={id} data-block-id={id} data-block-state={blockState}>
       <div className="blk-tag">
@@ -200,7 +296,7 @@ function Frame({ id, name, purpose, target, span = 6, children, initialState = '
                 data-state-option={state}
                 onClick={() => setBlockState(state)}
               >
-                {state === 'idle' ? 'Idle' : state === 'loading' ? 'Load' : state === 'empty' ? 'Empty' : 'Error'}
+                {state === 'idle' ? 'Idle' : state === 'loading' ? 'Load' : state === 'empty' ? 'Empty' : state === 'error' ? 'Error' : state === 'running' ? 'Run' : 'Cancel'}
               </button>
             ))}
           </span>
@@ -467,6 +563,21 @@ function ensureR4BStyles() {
     .blk-channel-chip { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 16px; border-radius: 3px; font-family: var(--font-mono); font-size: 9px; font-weight: 800; letter-spacing: 0.04em; border: 1px solid var(--border-subtle); color: var(--fg-primary); }
     .blk-channel-chip.yt { background: var(--tone-danger-bg); } .blk-channel-chip.ig { background: var(--accent-soft); } .blk-channel-chip.tt { background: var(--surface-ink); color: var(--fg-on-ink); } .blk-channel-chip.neutral { background: var(--surface-2); }
     .blk-time-axis { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 9px; color: var(--fg-tertiary); }
+    .blk-step-list { display: flex; flex-direction: column; gap: 6px; padding: 0; margin: 4px 0 0; list-style: none; }
+    .blk-step { display: grid; grid-template-columns: 14px 1fr auto; gap: 8px; align-items: baseline; font-family: var(--font-serif); font-style: italic; font-size: 13.5px; line-height: 1.4; }
+    .blk-step-marker { width: 10px; height: 10px; border-radius: 50%; align-self: center; }
+    .blk-step[data-state="done"] { color: var(--fg-secondary); }
+    .blk-step[data-state="done"] .blk-step-marker { background: var(--accent-primary); }
+    .blk-step[data-state="active"] .blk-step-marker { background: var(--surface-1); border: 2px solid var(--accent-primary); animation: blk-step-pulse 1.4s ease-in-out infinite; }
+    .blk-step[data-state="active"] { color: var(--fg-primary); font-weight: 500; }
+    .blk-step[data-state="pending"] .blk-step-marker { background: var(--surface-3); }
+    .blk-step[data-state="pending"] { color: var(--fg-tertiary); }
+    .blk-step[data-state="error"] .blk-step-marker { background: var(--tone-danger); }
+    .blk-step[data-state="error"] { color: var(--tone-danger); }
+    .blk-step[data-state="skipped"] .blk-step-marker { background: transparent; border: 1.5px dashed var(--fg-tertiary); }
+    .blk-step[data-state="skipped"] { color: var(--fg-tertiary); text-decoration: line-through; }
+    .blk-step-meta { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-tertiary); font-weight: 600; }
+    @keyframes blk-step-pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
     .blk-frame .mono, .r4b-thread-demo .mono { font-family: var(--font-mono); } .blk-frame .serif-it, .r4b-thread-demo .serif-it { font-family: var(--font-serif); font-style: italic; } .blk-frame .serif, .r4b-thread-demo .serif { font-family: var(--font-serif); } .blk-frame .num, .r4b-thread-demo .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
     .r4b-thread-demo { padding: 34px 48px 96px; max-width: 1180px; margin: 0 auto; }
     .r4b-thread-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; border-bottom: 3px solid var(--fg-primary); padding-bottom: 22px; margin-bottom: 28px; }

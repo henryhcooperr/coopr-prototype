@@ -1,0 +1,142 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Status pills</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--fg-primary);padding:32px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .eb-row{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--fg-primary);padding-top:10px;margin-bottom:14px}
+  .eb{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .card{background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:14px;margin-bottom:24px}
+  .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .lbl{font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase;min-width:80px}
+
+  /* Status pill — mono caps, tone-bg + tone-fg */
+  .pill{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:11px;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;line-height:1}
+  .pill .dot{width:5px;height:5px;border-radius:50%}
+  .pill.success{background:var(--tone-success-bg);color:var(--tone-success)}.pill.success .dot{background:var(--tone-success)}
+  .pill.warning{background:var(--tone-warning-bg);color:var(--tone-warning)}.pill.warning .dot{background:var(--tone-warning)}
+  .pill.info{background:var(--tone-info-bg);color:var(--tone-info)}.pill.info .dot{background:var(--tone-info)}
+  .pill.danger{background:var(--tone-danger-bg);color:var(--tone-danger)}.pill.danger .dot{background:var(--tone-danger)}
+  .pill.draft{background:var(--surface-2);color:var(--fg-secondary)}.pill.draft .dot{background:var(--fg-tertiary)}
+  .pill.live{background:var(--accent-soft);color:var(--accent-primary-press)}.pill.live .dot{background:var(--accent-primary)}
+  .pill.outline{background:transparent;border:1px solid var(--border-default);color:var(--fg-secondary)}.pill.outline .dot{background:var(--fg-tertiary)}
+
+  /* Score chip */
+  .score{display:inline-flex;align-items:baseline;gap:4px;padding:4px 10px;border-radius:6px;font-family:var(--font-mono);font-variant-numeric:tabular-nums;background:var(--surface-2);color:var(--fg-primary);border:1px solid var(--border-subtle)}
+  .score-num{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:18px;letter-spacing:-.02em;line-height:1}
+  .score-slash{font-size:11px;color:var(--fg-tertiary);font-weight:500}
+  .score.high{background:var(--accent-soft);border-color:var(--accent-primary);color:var(--accent-primary-press)}
+  .score.mid{background:var(--tone-warning-bg);border-color:var(--tone-warning);color:var(--tone-warning)}
+  .score.low{background:var(--tone-danger-bg);border-color:var(--tone-danger);color:var(--tone-danger)}
+
+  /* Trend pill */
+  .trend{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+  .trend.up{color:var(--tone-success)}
+  .trend.down{color:var(--tone-danger)}
+  .trend.flat{color:var(--fg-tertiary)}
+  .trend svg{width:10px;height:10px}
+
+  /* Counter chip — for inbox / unread */
+  .count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent-primary);color:var(--fg-on-accent);font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.04em}
+  .count.muted{background:var(--surface-3);color:var(--fg-secondary)}
+
+  /* Tag (chip) */
+  .tag{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:4px;font-family:var(--font-sans);font-size:11.5px;font-weight:500;color:var(--fg-secondary);background:var(--surface-2);border:1px solid var(--border-subtle)}
+  .tag.active{background:var(--surface-1);color:var(--fg-primary);border-color:var(--border-default)}
+  .tag.removable{padding-right:4px;gap:4px}
+  .tag .x{width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;color:var(--fg-tertiary);font-size:11px;cursor:pointer}
+  .tag .x:hover{background:var(--surface-3);color:var(--fg-primary)}
+
+  /* Pillar / scope chip — italic serif */
+  .scope{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 10px;border-radius:11px;background:var(--surface-2);color:var(--fg-primary);border:1px solid var(--border-subtle);font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:12.5px;letter-spacing:-.005em}
+  .scope-mark{font-family:var(--font-mono);font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--fg-tertiary);text-transform:uppercase}
+</style></head>
+<body>
+  <div class="eb-row"><span class="eb">Pills · status · score · trend · counter · tag · scope</span><span class="eb">SIX FAMILIES</span></div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h3 class="eb">Status pill · mono caps · tone-pair</h3>
+        <div class="row"><span class="lbl">Tones</span>
+          <span class="pill success"><span class="dot"></span>Shipped</span>
+          <span class="pill warning"><span class="dot"></span>Needs review</span>
+          <span class="pill info"><span class="dot"></span>Indexing</span>
+          <span class="pill danger"><span class="dot"></span>Failed</span>
+        </div>
+        <div class="row"><span class="lbl">Workflow</span>
+          <span class="pill draft"><span class="dot"></span>Draft</span>
+          <span class="pill draft"><span class="dot"></span>Scheduled</span>
+          <span class="pill live"><span class="dot"></span>Live</span>
+          <span class="pill outline"><span class="dot"></span>Archived</span>
+        </div>
+        <p class="body" style="margin:0;font-size:12.5px">22px tall, mono 10.5px, leading dot 5px. Tone-bg and tone-fg always pair from the same family — never invert.</p>
+      </div>
+
+      <div class="card">
+        <h3 class="eb">Score chip · single value, italic numeral</h3>
+        <div class="row"><span class="lbl">Bands</span>
+          <span class="score high"><span class="score-num">86</span><span class="score-slash">/100</span></span>
+          <span class="score"><span class="score-num">72</span><span class="score-slash">/100</span></span>
+          <span class="score mid"><span class="score-num">52</span><span class="score-slash">/100</span></span>
+          <span class="score low"><span class="score-num">31</span><span class="score-slash">/100</span></span>
+        </div>
+        <p class="body" style="margin:0;font-size:12.5px">Italic Literata numerator + mono slash + denominator. Bands: ≥80 high (cocoa) · 60–79 default (paper) · 40–59 mid (ochre) · &lt;40 low (clay).</p>
+      </div>
+
+      <div class="card">
+        <h3 class="eb">Trend pill · perf delta</h3>
+        <div class="row" style="gap:14px">
+          <span class="trend up"><svg viewBox="0 0 10 10"><path d="M1 7 L5 3 L9 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>+22%</span>
+          <span class="trend up"><svg viewBox="0 0 10 10"><path d="M1 7 L5 3 L9 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>+1.4K</span>
+          <span class="trend flat"><svg viewBox="0 0 10 10"><path d="M1 5 L9 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>0%</span>
+          <span class="trend down"><svg viewBox="0 0 10 10"><path d="M1 3 L5 7 L9 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>−12%</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3 class="eb">Counter chip · unread / queue</h3>
+        <div class="row" style="gap:18px">
+          <span class="count">3</span>
+          <span class="count">12</span>
+          <span class="count">99+</span>
+          <span class="count muted">5</span>
+        </div>
+        <div class="row" style="gap:12px;margin-top:6px">
+          <span style="font-family:var(--font-sans);font-size:13px;color:var(--fg-secondary)">Inbox</span>
+          <span class="count">3</span>
+          <span style="font-family:var(--font-sans);font-size:13px;color:var(--fg-secondary);margin-left:14px">Comments today</span>
+          <span class="count">12</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="eb">Tag · neutral chip with optional remove</h3>
+        <div class="row">
+          <span class="tag">freediving</span>
+          <span class="tag active">safety pillar</span>
+          <span class="tag">8-breath</span>
+          <span class="tag">truk lagoon</span>
+        </div>
+        <div class="row" style="margin-top:4px">
+          <span class="tag removable">freediving<span class="x">×</span></span>
+          <span class="tag removable">safety<span class="x">×</span></span>
+          <span class="tag removable">truk<span class="x">×</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="eb">Scope chip · italic, project-aware</h3>
+        <div class="row" style="gap:8px">
+          <span class="scope"><span class="scope-mark">@</span>Truk Lagoon</span>
+          <span class="scope"><span class="scope-mark">@</span>Cold Door</span>
+          <span class="scope"><span class="scope-mark">#</span>Pillar one</span>
+          <span class="scope"><span class="scope-mark">#</span>Safety</span>
+        </div>
+        <p class="body" style="margin:0;font-size:12.5px">Italic Literata over paper — used inside the composer to show the active scope, and inline in chat turns to thread back to a project.</p>
+      </div>
+    </div>
+  </div>
+</body></html>

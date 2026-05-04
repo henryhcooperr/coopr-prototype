@@ -1,0 +1,136 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Modals &amp; popovers</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--fg-primary);padding:32px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1200px;margin:0 auto}
+  .col{display:flex;flex-direction:column;gap:24px}
+  .eb-row{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--fg-primary);padding-top:10px;margin-bottom:0}
+  .eb{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+
+  /* Modal */
+  .modal-frame{background:var(--surface-3);border-radius:var(--radius-lg);padding:28px;display:flex;justify-content:center;align-items:center;min-height:360px}
+  .modal{width:100%;max-width:480px;background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);overflow:hidden}
+  .modal-head{padding:18px 22px 14px;display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+  .modal-eb{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-tertiary);margin-bottom:6px}
+  .modal-h{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:24px;letter-spacing:-.025em;line-height:1.15;color:var(--fg-primary);margin:0}
+  .modal-x{width:24px;height:24px;border-radius:var(--radius-sm);background:none;border:none;color:var(--fg-tertiary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .modal-x:hover{background:var(--surface-2);color:var(--fg-primary)}
+  .modal-body{padding:0 22px 18px;display:flex;flex-direction:column;gap:14px}
+  .modal-p{font-family:var(--font-sans);font-size:13.5px;line-height:1.55;color:var(--fg-secondary);margin:0}
+  .modal-foot{padding:14px 22px;border-top:1px solid var(--border-subtle);background:var(--surface-1);display:flex;justify-content:flex-end;gap:8px}
+  .btn{height:32px;padding:0 14px;border-radius:var(--radius-md);font-family:var(--font-sans);font-size:13px;font-weight:600;border:1px solid transparent;cursor:pointer}
+  .btn.primary{background:var(--accent-primary);color:var(--fg-on-accent)}
+  .btn.danger{background:var(--tone-danger);color:#fdfcf9}
+  .btn.ghost{background:transparent;color:var(--fg-secondary);border-color:var(--border-default)}
+
+  /* Popover */
+  .pop-stage{background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:32px;display:flex;justify-content:center;align-items:flex-start;min-height:280px;position:relative}
+  .pop-anchor{padding:8px 14px;border:1px solid var(--border-default);border-radius:var(--radius-md);background:var(--surface-2);font-family:var(--font-sans);font-size:13px;color:var(--fg-secondary);position:relative;margin-top:160px}
+  .pop{position:absolute;background:var(--surface-1);border:1px solid var(--border-default);border-radius:var(--radius-md);box-shadow:0 12px 28px -16px rgba(26,24,21,.22),0 2px 6px -3px rgba(26,24,21,.08);padding:8px 0;width:280px}
+  .pop-arrow{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:var(--surface-1);border-right:1px solid var(--border-default);border-bottom:1px solid var(--border-default)}
+  .pop-head{padding:6px 14px 4px;font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .pop-item{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;font-family:var(--font-sans);font-size:13px;color:var(--fg-primary);cursor:pointer}
+  .pop-item:hover{background:var(--surface-2)}
+  .pop-item.active{background:var(--surface-2)}
+  .pop-meta{font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);letter-spacing:.04em}
+  .pop-divider{height:1px;background:var(--border-subtle);margin:4px 0}
+
+  /* Tooltip */
+  .ttp-stage{background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:48px 32px;display:flex;justify-content:space-around;align-items:center;min-height:120px}
+  .ttp-anchor{padding:6px 12px;border:1px dashed var(--border-default);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:11px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase;position:relative}
+  .ttp{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--surface-ink);color:var(--fg-on-ink);font-family:var(--font-sans);font-size:11.5px;line-height:1.4;padding:6px 9px;border-radius:var(--radius-sm);white-space:nowrap;font-weight:500}
+  .ttp::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--surface-ink)}
+  .ttp.right{bottom:auto;left:calc(100% + 8px);transform:translateY(-50%);top:50%}
+  .ttp.right::after{top:50%;left:0;transform:translate(-100%,-50%);border-top-color:transparent;border-right-color:var(--surface-ink)}
+
+  /* Drawer */
+  .drawer-frame{background:var(--surface-3);border-radius:var(--radius-lg);overflow:hidden;display:flex;justify-content:flex-end;min-height:340px;position:relative}
+  .drawer{width:380px;background:var(--surface-1);border-left:1px solid var(--border-default);display:flex;flex-direction:column}
+  .drawer-head{padding:16px 20px;border-bottom:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+  .drawer-h{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:20px;letter-spacing:-.02em;margin:0 0 4px}
+  .drawer-body{padding:18px 20px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field-l{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .field-i{height:32px;padding:0 12px;border:1px solid var(--border-default);border-radius:var(--radius-md);background:var(--surface-1);font-family:var(--font-sans);font-size:13px;color:var(--fg-primary);display:flex;align-items:center}
+
+  /* Confirm modal — danger */
+  .confirm-h{color:var(--tone-danger)}
+</style></head>
+<body>
+  <div class="grid">
+    <div class="col">
+      <div class="eb-row"><span class="eb">Modal · standard</span><span class="eb">CENTERED · 480PX MAX</span></div>
+      <div class="modal-frame">
+        <div class="modal">
+          <div class="modal-head">
+            <div><div class="modal-eb">Schedule · Truk Lagoon · Variant A</div><h2 class="modal-h">Pin this version and schedule across both channels?</h2></div>
+            <button class="modal-x">×</button>
+          </div>
+          <div class="modal-body">
+            <p class="modal-p">Variant A scores 78 — four points above last month's median. Pinning will lock it as the canonical version and queue Wed 09:00 publish on YouTube + IG.</p>
+            <div style="display:flex;gap:10px;padding:10px 12px;background:var(--surface-2);border-radius:var(--radius-md);font-family:var(--font-mono);font-size:11px;color:var(--fg-secondary);letter-spacing:.04em"><span>YT · WED 09:00</span><span>IG · WED 09:30</span><span style="margin-left:auto;color:var(--accent-primary);font-weight:600">SCORE 78</span></div>
+          </div>
+          <div class="modal-foot"><button class="btn ghost">Cancel</button><button class="btn primary">Pin &amp; schedule</button></div>
+        </div>
+      </div>
+
+      <div class="eb-row"><span class="eb">Modal · destructive confirm</span><span class="eb">DANGER · KEY MATCHES NAME</span></div>
+      <div class="modal-frame">
+        <div class="modal">
+          <div class="modal-head">
+            <div><div class="modal-eb" style="color:var(--tone-danger)">Discard · Variant B</div><h2 class="modal-h confirm-h">This deletes Variant B and all its scored runs.</h2></div>
+            <button class="modal-x">×</button>
+          </div>
+          <div class="modal-body">
+            <p class="modal-p">Eight scoring runs and three pinned comments are attached to this draft. They go with it.</p>
+          </div>
+          <div class="modal-foot"><button class="btn ghost">Keep it</button><button class="btn danger">Discard Variant B</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="eb-row"><span class="eb">Popover · scope picker</span><span class="eb">ANCHORED · TOP-CENTER</span></div>
+      <div class="pop-stage">
+        <div class="pop" style="top:18px;left:50%;transform:translateX(-50%)">
+          <div class="pop-head">Workspaces</div>
+          <div class="pop-item active"><span>@Home</span><span class="pop-meta">ALL PROJECTS</span></div>
+          <div class="pop-head">Projects</div>
+          <div class="pop-item"><span>@Truk Lagoon</span><span class="pop-meta">PILLAR ONE · 4 POSTS</span></div>
+          <div class="pop-item"><span>@Cold Door</span><span class="pop-meta">PILLAR TWO · 7 POSTS</span></div>
+          <div class="pop-divider"></div>
+          <div class="pop-head">Sources</div>
+          <div class="pop-item"><span>@Library</span><span class="pop-meta">47 INDEXED</span></div>
+          <div class="pop-item"><span>@Inbox</span><span class="pop-meta">24 OPEN</span></div>
+          <div class="pop-arrow"></div>
+        </div>
+        <div class="pop-anchor">@HOME · ALL PROJECTS ▾</div>
+      </div>
+
+      <div class="eb-row"><span class="eb">Tooltip · ink-on-paper inverse</span><span class="eb">11.5PX SANS · TWO POSITIONS</span></div>
+      <div class="ttp-stage">
+        <div class="ttp-anchor">SCORE<span class="ttp">Score against last month's quartile</span></div>
+        <div class="ttp-anchor">PIN<span class="ttp right">Pin as canonical version</span></div>
+        <div class="ttp-anchor">DISCARD<span class="ttp">Delete this draft permanently</span></div>
+      </div>
+
+      <div class="eb-row"><span class="eb">Drawer · right side · 380px</span><span class="eb">USED FOR FILTERS · METADATA</span></div>
+      <div class="drawer-frame">
+        <div class="drawer">
+          <div class="drawer-head">
+            <div><div class="modal-eb">Edit · Block-014</div><h2 class="drawer-h">Truk Lagoon · Variant A</h2></div>
+            <button class="modal-x">×</button>
+          </div>
+          <div class="drawer-body">
+            <div class="field"><span class="field-l">Title</span><div class="field-i">Eight breaths down to the wreck floor.</div></div>
+            <div class="field"><span class="field-l">Pillar</span><div class="field-i">Safety · Pillar one</div></div>
+            <div class="field"><span class="field-l">Channels</span><div class="field-i">YouTube + Instagram</div></div>
+            <div class="field"><span class="field-l">Schedule</span><div class="field-i">Wed 09:00 · 4 days from now</div></div>
+          </div>
+          <div class="modal-foot"><button class="btn ghost">Cancel</button><button class="btn primary">Save</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body></html>

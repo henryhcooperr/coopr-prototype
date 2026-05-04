@@ -1,0 +1,142 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Spacing · Playground</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--fg-primary)}
+  .stage{padding:32px;display:grid;grid-template-columns:1fr 320px;gap:32px;min-height:100vh;box-sizing:border-box}
+  .demo{display:flex;flex-direction:column;gap:var(--gap, 16px)}
+  .eb-row{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--fg-primary);padding-top:10px}
+  .eb{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .card{background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:var(--card-pad, 16px);display:flex;flex-direction:column;gap:var(--card-inner, 12px)}
+  .card-h{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:24px;letter-spacing:-.025em;line-height:1.08;margin:0}
+  .card-body{font-family:var(--font-sans);font-size:14px;line-height:1.55;color:var(--fg-secondary);margin:0;max-width:60ch}
+  .card-row{display:flex;align-items:baseline;gap:var(--card-inner, 12px);font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase}
+  .row-list{display:flex;flex-direction:column;gap:var(--row-gap, 8px)}
+  .row{display:flex;align-items:center;gap:var(--row-gap, 8px);padding:var(--row-pad, 8px) 12px;background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius-md)}
+  .row-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-primary)}
+  .row-label{font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:14px;color:var(--fg-primary);letter-spacing:-.005em;flex:1}
+  .row-meta{font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase}
+
+  /* Panel */
+  .panel{background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:18px;align-self:start;position:sticky;top:32px}
+  .panel h3{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-tertiary);margin:0 0 8px}
+  .group{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--border-subtle);padding-top:14px}
+  .group:first-of-type{border-top:none;padding-top:0}
+  .group-title{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .ctrl{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .ctrl-label{font-family:var(--font-sans);font-size:13px;color:var(--fg-primary)}
+  .ctrl-val{font-family:var(--font-mono);font-size:11px;color:var(--accent-primary);font-weight:600}
+  input[type=range]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;height:18px}
+  input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--border-default);border-radius:2px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent-primary);margin-top:-6px;cursor:pointer}
+  input[type=range]::-moz-range-track{height:2px;background:var(--border-default);border-radius:2px}
+  input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent-primary);border:none;cursor:pointer}
+  .preset-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .preset{padding:6px 8px;border:1px solid var(--border-subtle);background:var(--surface-1);border-radius:4px;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-secondary);cursor:pointer}
+  .preset.active{background:var(--accent-soft);border-color:var(--accent-primary);color:var(--accent-primary-press)}
+  .legend{font-family:var(--font-sans);font-size:12px;line-height:1.5;color:var(--fg-secondary);margin:0}
+</style></head>
+<body>
+  <div class="stage" id="stage">
+    <div>
+      <div class="eb-row" style="margin-bottom:14px"><span class="eb">Spacing · live density</span><span class="eb" id="ebRight">PRESET: COMFY · 16 / 12 / 8</span></div>
+      <div class="demo">
+        <div class="card">
+          <div class="card-row"><span>FIG · TRUK LAGOON · BLOCK-014</span><span style="margin-left:auto">DRAFT</span></div>
+          <h3 class="card-h">Eight breaths down to the wreck floor.</h3>
+          <p class="card-body">The first eight breaths are the only ones that matter. Past that, your body learns the cold; before, you're still negotiating with the surface. Truk Lagoon is generous — it lets you negotiate slowly.</p>
+        </div>
+        <div class="row-list">
+          <div class="row"><span class="row-dot"></span><span class="row-label">Score safety variants vs. top quartile</span><span class="row-meta">14M · 12 MSG</span></div>
+          <div class="row"><span class="row-dot"></span><span class="row-label">Tighten Truk Lagoon hook · eight breaths</span><span class="row-meta">1H · 8 MSG</span></div>
+          <div class="row"><span class="row-dot" style="background:var(--border-default)"></span><span class="row-label">Reply to @reefkid_07 · pinned comment</span><span class="row-meta">2H · 3 MSG</span></div>
+          <div class="row"><span class="row-dot" style="background:var(--border-default)"></span><span class="row-label">Pull a quote from Cold Door for thread two</span><span class="row-meta">TUE · 6 MSG</span></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="panel">
+      <h3>Density playground</h3>
+      <p class="legend">Drag the sliders to feel the editorial breathing room. Presets snap to the canonical density modes the kit supports.</p>
+
+      <div class="group">
+        <span class="group-title">Preset</span>
+        <div class="preset-row">
+          <button class="preset" data-preset="tight">Tight</button>
+          <button class="preset active" data-preset="comfy">Comfy</button>
+          <button class="preset" data-preset="airy">Airy</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <span class="group-title">Block gap</span>
+        <div class="ctrl"><span class="ctrl-label">Stack gap</span><span class="ctrl-val" id="vGap">16 px</span></div>
+        <input type="range" min="4" max="48" step="4" value="16" id="iGap">
+      </div>
+
+      <div class="group">
+        <span class="group-title">Card</span>
+        <div class="ctrl"><span class="ctrl-label">Padding</span><span class="ctrl-val" id="vPad">16 px</span></div>
+        <input type="range" min="8" max="32" step="4" value="16" id="iPad">
+        <div class="ctrl"><span class="ctrl-label">Inner gap</span><span class="ctrl-val" id="vInner">12 px</span></div>
+        <input type="range" min="4" max="24" step="2" value="12" id="iInner">
+      </div>
+
+      <div class="group">
+        <span class="group-title">Row list</span>
+        <div class="ctrl"><span class="ctrl-label">Row gap</span><span class="ctrl-val" id="vRowGap">8 px</span></div>
+        <input type="range" min="0" max="16" step="2" value="8" id="iRowGap">
+        <div class="ctrl"><span class="ctrl-label">Row padding</span><span class="ctrl-val" id="vRowPad">8 px</span></div>
+        <input type="range" min="4" max="20" step="2" value="8" id="iRowPad">
+      </div>
+
+      <p class="legend"><strong>Recommended.</strong> Comfy 16 / 12 / 8 is the default. Use Tight for nested grids and Airy for hero-state empty surfaces.</p>
+    </aside>
+  </div>
+
+  <script>
+    const stage = document.getElementById('stage');
+    const ebR = document.getElementById('ebRight');
+    const map = {
+      tight: {gap:8,  pad:12, inner:8,  rowGap:0,  rowPad:6},
+      comfy: {gap:16, pad:16, inner:12, rowGap:8,  rowPad:8},
+      airy:  {gap:24, pad:24, inner:16, rowGap:12, rowPad:12},
+    };
+    const ids = {gap:'iGap', pad:'iPad', inner:'iInner', rowGap:'iRowGap', rowPad:'iRowPad'};
+    const valIds = {gap:'vGap', pad:'vPad', inner:'vInner', rowGap:'vRowGap', rowPad:'vRowPad'};
+
+    function applyVars(s){
+      stage.style.setProperty('--gap', s.gap+'px');
+      stage.style.setProperty('--card-pad', s.pad+'px');
+      stage.style.setProperty('--card-inner', s.inner+'px');
+      stage.style.setProperty('--row-gap', s.rowGap+'px');
+      stage.style.setProperty('--row-pad', s.rowPad+'px');
+      Object.keys(s).forEach(k => {
+        document.getElementById(ids[k]).value = s[k];
+        document.getElementById(valIds[k]).textContent = s[k]+' px';
+      });
+      const guess = closestPreset(s);
+      document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active', b.dataset.preset === guess));
+      ebR.textContent = guess ? `PRESET: ${guess.toUpperCase()} · ${s.pad} / ${s.inner} / ${s.rowPad}` : `CUSTOM · ${s.pad} / ${s.inner} / ${s.rowPad}`;
+    }
+    function closestPreset(s){
+      for (const [k,v] of Object.entries(map)) {
+        if (v.gap===s.gap && v.pad===s.pad && v.inner===s.inner && v.rowGap===s.rowGap && v.rowPad===s.rowPad) return k;
+      }
+      return null;
+    }
+    document.querySelectorAll('.preset').forEach(b => {
+      b.addEventListener('click', () => applyVars(map[b.dataset.preset]));
+    });
+    Object.keys(ids).forEach(k => {
+      document.getElementById(ids[k]).addEventListener('input', e => {
+        const cur = {
+          gap:+iGap.value, pad:+iPad.value, inner:+iInner.value,
+          rowGap:+iRowGap.value, rowPad:+iRowPad.value
+        };
+        applyVars(cur);
+      });
+    });
+    applyVars(map.comfy);
+  </script>
+</body></html>

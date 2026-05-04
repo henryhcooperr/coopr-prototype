@@ -22,6 +22,7 @@
 
   <!-- ── DATA + DESIGN-CANVAS + SHARED CHROME ─────────────────────────── -->
   <script src="hifi-data.js"></script>
+  <script type="text/babel" src="hifi-job-registry.jsx"></script>
   <script type="text/babel" src="design-canvas.jsx"></script>
   <script type="text/babel" src="hifi-chrome.jsx"></script>
   <script type="text/babel" src="hifi-data-chrome.jsx"></script>
@@ -94,6 +95,19 @@
   <script type="text/babel" src="hifi-cohesion-r9-livemode.jsx?v=1777801000"></script>
   <script type="text/babel" src="hifi-cohesion-r9-card-preview.jsx?v=1777801000"></script>
   <script type="text/babel" src="hifi-cohesion-r9-surface-rhythm.jsx?v=1777801000"></script>
+
+  <!-- ── Design System overlay (R10 fleet · 2026-05-04) ─────────────
+       Opens from R9 chrome corner menu → full-bleed iframe over
+       design-system/index.html. ESC + click-outside dismiss. -->
+  <script type="text/babel" src="hifi-design-system-overlay.jsx?v=1777802000"></script>
+
+  <!-- ── R10 · Docs surface header polish (Claude Design v3 inbound 2026-05-04) ───
+       CSS-only overrides on R8 single-vessel — header rhythm, vessel chrome retire,
+       meta-strip, tools redesign. Loads after R9. -->
+  <script type="text/babel" src="hifi-docs-r10-header-rhythm.jsx?v=1777802000"></script>
+  <script type="text/babel" src="hifi-docs-r10-vessel.jsx?v=1777802000"></script>
+  <script type="text/babel" src="hifi-docs-r10-meta-strip.jsx?v=1777802000"></script>
+  <script type="text/babel" src="hifi-docs-r10-tools.jsx?v=1777802000"></script>
 
   <!-- ── R4 library upgrade — visuals primitives FIRST ───────────────── -->
   <script type="text/babel" src="hifi-r4-lib-visuals.jsx"></script>

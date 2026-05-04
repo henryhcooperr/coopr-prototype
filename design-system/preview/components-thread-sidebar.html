@@ -1,0 +1,117 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Thread sidebar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,ital,wght@7..72,0,400;7..72,0,600;7..72,1,400;7..72,1,500;7..72,1,600&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;padding:32px;background:#fbfaf6;font-family:'Inter Tight',system-ui,sans-serif;color:#1a1815}
+  .stage{display:flex;background:#fefdf9;border:1px solid #ebe7dc;border-radius:12px;height:520px;overflow:hidden}
+  .rail{width:268px;flex-shrink:0;border-right:1px solid #ebe7dc;padding:24px 18px;display:flex;flex-direction:column;gap:4px;background:#fbfaf6;overflow:auto}
+  .head{display:flex;justify-content:space-between;align-items:baseline;padding:0 4px 12px}
+  .head-eb{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8782}
+  .head-new{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#5a371f;cursor:pointer;background:none;border:none;padding:0}
+  .group{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8782;padding:12px 4px 6px}
+  .item{display:flex;flex-direction:column;gap:3px;padding:8px 10px;border-radius:6px;cursor:default}
+  .item.active{background:#f5f3ec}
+  .item-title{font-family:'Literata',serif;font-style:italic;font-weight:500;font-size:13.5px;color:#1a1815;letter-spacing:-.01em;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .item.active .item-title{color:#371e13;font-weight:600}
+  .item-meta{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#8a8782;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+  .unread{display:inline-block;width:5px;height:5px;border-radius:50%;background:#5a371f;margin-right:6px;vertical-align:middle}
+
+  .canvas{flex:1;padding:24px 32px;display:flex;flex-direction:column;gap:14px;min-width:0}
+  .canvas-eb-row{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #1a1815;padding-top:10px}
+  .canvas-eb{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:#8a8782}
+  .canvas-h{font-family:'Literata',serif;font-style:italic;font-weight:600;font-size:28px;letter-spacing:-.03em;line-height:1.06;color:#1a1815;margin:0}
+  .canvas-tail{color:#8a8782}
+  .turn{display:flex;gap:14px;padding:8px 0}
+  .turn-role{font-family:'JetBrains Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.10em;color:#8a8782;font-weight:600;width:64px;flex-shrink:0;padding-top:4px}
+  .turn-bubble{flex:1;padding:10px 14px;background:#f5f3ec;border-radius:10px;font-size:14px;line-height:1.5;color:#1a1815}
+  .turn-prose{flex:1;font-size:14.5px;line-height:1.6;color:#1a1815}
+
+  .caption{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cap-eb{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8782;margin-bottom:6px}
+  .cap-lit{font-family:'Literata',serif;font-style:italic;font-weight:500;font-size:17px;letter-spacing:-.018em;line-height:1.25;color:#1a1815;margin:0 0 8px}
+  .cap-body{font-family:'Inter Tight',sans-serif;font-size:13px;line-height:1.5;color:#5c5a55;margin:0;max-width:46ch}
+  .cap-rule{height:1px;background:#1a1815;margin-bottom:8px}
+</style></head>
+<body>
+  <div class="stage">
+    <nav class="rail">
+      <div class="head">
+        <span class="head-eb">Threads · 12 active</span>
+        <button class="head-new">+ New</button>
+      </div>
+
+      <div class="group">Today</div>
+      <div class="item active">
+        <span class="item-title">Score safety variants vs. top quartile</span>
+        <span class="item-meta">14M · 12 MSG</span>
+      </div>
+      <div class="item">
+        <span class="item-title"><span class="unread"></span>Tighten Truk Lagoon hook · eight breaths</span>
+        <span class="item-meta">1H · 8 MSG</span>
+      </div>
+      <div class="item">
+        <span class="item-title">Reply to @reefkid_07 · pinned comment</span>
+        <span class="item-meta">2H · 3 MSG</span>
+      </div>
+
+      <div class="group">Yesterday</div>
+      <div class="item">
+        <span class="item-title">Pull a quote from Cold Door for thread two</span>
+        <span class="item-meta">TUE · 6 MSG</span>
+      </div>
+      <div class="item">
+        <span class="item-title">What's flatlining on Instagram?</span>
+        <span class="item-meta">TUE · 9 MSG</span>
+      </div>
+
+      <div class="group">Last week</div>
+      <div class="item">
+        <span class="item-title">Re-map pillars after April yield</span>
+        <span class="item-meta">MON · 21 MSG</span>
+      </div>
+      <div class="item">
+        <span class="item-title">Draft sponsor reply for Aqua-Lung</span>
+        <span class="item-meta">FRI · 14 MSG</span>
+      </div>
+      <div class="item">
+        <span class="item-title">Why does retention drop at 00:08?</span>
+        <span class="item-meta">THU · 18 MSG</span>
+      </div>
+    </nav>
+
+    <div class="canvas">
+      <div class="canvas-eb-row">
+        <span class="canvas-eb">Thread · safety variants vs. top quartile</span>
+        <span class="canvas-eb">OPENED 14M AGO · 12 MESSAGES · INDEXED</span>
+      </div>
+      <h2 class="canvas-h">Variant A carries. <span class="canvas-tail">78 / 100, four points above last month's median.</span></h2>
+
+      <div class="turn">
+        <div class="turn-role">YOU</div>
+        <div class="turn-bubble">Score the two safety variants against last month's top quartile.</div>
+      </div>
+      <div class="turn">
+        <div class="turn-role">COOPR</div>
+        <div class="turn-prose">Variant A scores 78 — above last month's median of 64. Variant B scores 52 — wrong audience cue. Pinning A to Truk Lagoon. The eight-breaths phrase carries; trim the third pick.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption">
+    <div>
+      <div class="cap-rule"></div>
+      <div class="cap-eb">Thread sidebar · 268px</div>
+      <h2 class="cap-lit">Home only. <span style="color:#8a8782">Lists chat threads, not workspaces.</span></h2>
+      <p class="cap-body">Lives <em>inside</em> Home, beside the conversation column. Don't confuse with the retired global side rail. Header has thread count + "+ New". Threads grouped by recency (Today · Yesterday · Last week). Active thread → <code>--surface-2</code> wash + clay title. Unread threads carry a 5px cocoa dot before the title.</p>
+    </div>
+    <div>
+      <div class="cap-rule"></div>
+      <div class="cap-eb">Anatomy</div>
+      <h2 class="cap-lit">Italic title + mono meta. <span style="color:#8a8782">No icons.</span></h2>
+      <p class="cap-body">Each item is two lines: italic Literata title (truncated to one line) + mono-caps meta (age · message count). No icons, no avatars — the title <em>is</em> the wayfinding. Same item shape used on Home thread sidebar and (visually) on the Docs outline rail; the rail's items are documents, the sidebar's are conversations.</p>
+    </div>
+  </div>
+</body></html>

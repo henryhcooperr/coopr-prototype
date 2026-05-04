@@ -1,0 +1,116 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Toasts &amp; banners</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--fg-primary);padding:32px}
+  .stage{display:flex;flex-direction:column;gap:24px;max-width:880px;margin:0 auto}
+  .eb-row{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--fg-primary);padding-top:10px;margin-bottom:0}
+  .eb{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+
+  .group{display:flex;flex-direction:column;gap:10px}
+
+  /* Toast — inverse on ink, mono caps prefix */
+  .toast{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--surface-ink);color:var(--fg-on-ink);border-radius:var(--radius-md);max-width:520px}
+  .toast-mark{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-soft);flex-shrink:0}
+  .toast-body{font-family:var(--font-sans);font-size:13.5px;line-height:1.45;flex:1}
+  .toast-act{font-family:var(--font-sans);font-size:12.5px;font-weight:600;color:var(--accent-soft);background:none;border:none;cursor:pointer;padding:4px 6px}
+  .toast.tone-success .toast-mark{color:#d4caa6}
+  .toast.tone-danger{background:var(--tone-danger);color:#fdfcf9}
+  .toast.tone-danger .toast-mark{color:#fdfcf9;opacity:.85}
+
+  /* Inline banner — full-width, tinted */
+  .banner{display:flex;gap:14px;padding:14px 18px;border-radius:var(--radius-md);align-items:flex-start;border:1px solid}
+  .banner-mark{font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;flex-shrink:0;padding-top:1px}
+  .banner-body{flex:1}
+  .banner-h{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:18px;letter-spacing:-.018em;line-height:1.2;margin:0 0 4px;color:var(--fg-primary)}
+  .banner-p{font-family:var(--font-sans);font-size:13px;line-height:1.5;color:var(--fg-secondary);margin:0;max-width:60ch}
+  .banner-act{display:flex;gap:6px;margin-top:10px}
+  .banner-btn{height:28px;padding:0 12px;border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12.5px;font-weight:600;border:none;cursor:pointer}
+  .banner-btn.primary{background:var(--accent-primary);color:var(--fg-on-accent)}
+  .banner-btn.ghost{background:transparent;color:var(--fg-secondary)}
+
+  .banner.info{background:var(--tone-info-bg);border-color:var(--tone-info)}.banner.info .banner-mark{color:var(--tone-info)}
+  .banner.success{background:var(--tone-success-bg);border-color:var(--tone-success)}.banner.success .banner-mark{color:var(--tone-success)}
+  .banner.warning{background:var(--tone-warning-bg);border-color:var(--tone-warning)}.banner.warning .banner-mark{color:var(--tone-warning)}
+  .banner.danger{background:var(--tone-danger-bg);border-color:var(--tone-danger)}.banner.danger .banner-mark{color:var(--tone-danger)}
+  .banner.accent{background:var(--accent-soft);border-color:var(--accent-primary)}.banner.accent .banner-mark{color:var(--accent-primary-press)}
+
+  /* Empty state */
+  .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 32px;background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);text-align:center;gap:8px}
+  .empty-eb{font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .empty-h{font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:24px;letter-spacing:-.02em;line-height:1.18;color:var(--fg-tertiary);margin:0;max-width:38ch}
+  .empty-p{font-family:var(--font-sans);font-size:13px;line-height:1.5;color:var(--fg-tertiary);margin:0;max-width:46ch}
+  .empty-act{margin-top:8px;height:30px;padding:0 14px;border-radius:var(--radius-md);background:var(--accent-primary);color:var(--fg-on-accent);font-family:var(--font-sans);font-size:13px;font-weight:600;border:none;cursor:pointer}
+
+  /* Indicator dot row */
+  .ind-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-secondary)}
+  .ind{display:inline-flex;align-items:center;gap:7px}
+  .ind-dot{width:7px;height:7px;border-radius:50%;background:var(--tone-success);box-shadow:0 0 0 2px var(--surface-1),0 0 0 3px var(--tone-success-bg)}
+  .ind-dot.warn{background:var(--tone-warning);box-shadow:0 0 0 2px var(--surface-1),0 0 0 3px var(--tone-warning-bg)}
+  .ind-dot.danger{background:var(--tone-danger);box-shadow:0 0 0 2px var(--surface-1),0 0 0 3px var(--tone-danger-bg)}
+  .ind-dot.muted{background:var(--fg-tertiary);box-shadow:0 0 0 2px var(--surface-1),0 0 0 3px var(--surface-3)}
+</style></head>
+<body>
+  <div class="stage">
+    <div class="eb-row"><span class="eb">Toasts · banners · empty states · indicators</span><span class="eb">FEEDBACK PRIMITIVES</span></div>
+
+    <div class="group">
+      <h3 class="eb">Toast · ephemeral, ink-on-paper inverse</h3>
+      <div class="toast"><span class="toast-mark">SAVED</span><span class="toast-body">Block-014 pinned to <em>Truk Lagoon</em>.</span><button class="toast-act">Open</button></div>
+      <div class="toast tone-success"><span class="toast-mark">SCHEDULED</span><span class="toast-body">"Eight breaths" goes live Wed 09:00 across YouTube + IG.</span><button class="toast-act">Undo</button></div>
+      <div class="toast tone-danger"><span class="toast-mark">FAILED</span><span class="toast-body">YouTube upload couldn't connect — token expired 4m ago.</span><button class="toast-act" style="color:#fdfcf9">Reconnect</button></div>
+    </div>
+
+    <div class="group">
+      <h3 class="eb">Banner · in-context, tinted, max 60ch body</h3>
+      <div class="banner accent">
+        <span class="banner-mark">REASONING</span>
+        <div class="banner-body">
+          <h3 class="banner-h">Coopr noticed Variant B's audience cue is wrong.</h3>
+          <p class="banner-p">It's pulling against the safety pillar — yields are 38% below median. Swap pick three or pin Variant A as the canonical version.</p>
+          <div class="banner-act"><button class="banner-btn primary">Pin Variant A</button><button class="banner-btn ghost">See reasoning</button></div>
+        </div>
+      </div>
+      <div class="banner warning">
+        <span class="banner-mark">CADENCE</span>
+        <div class="banner-body">
+          <h3 class="banner-h">TikTok cadence collapsed. <span style="color:var(--fg-tertiary)">Six days since last ship.</span></h3>
+          <p class="banner-p">Format DNA suggests an auto-cut from <em>Truk Lagoon</em> would clear the gap without diluting the safety pillar.</p>
+        </div>
+      </div>
+      <div class="banner success">
+        <span class="banner-mark">INDEXED</span>
+        <div class="banner-body"><h3 class="banner-h">Cold Door transcript is ready.</h3><p class="banner-p">47 quotes parsed · 12 candidates flagged for the pillar-two thread.</p></div>
+      </div>
+      <div class="banner danger">
+        <span class="banner-mark">UPLOAD FAILED</span>
+        <div class="banner-body"><h3 class="banner-h">YouTube auth expired four minutes ago.</h3><p class="banner-p">The Wed 09:00 publish is paused until you reconnect. No retries scheduled — Coopr won't ship without your sign-off.</p><div class="banner-act"><button class="banner-btn primary" style="background:var(--tone-danger)">Reconnect</button></div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3 class="eb">Empty state · italic serif, dimmed</h3>
+      <div class="empty">
+        <span class="empty-eb">Inbox · Comments</span>
+        <h3 class="empty-h">Nothing worth replying to.</h3>
+        <p class="empty-p">Coopr filtered 412 comments down to zero — no questions, no pinned-worthy quotes. Check back after tonight's publish.</p>
+      </div>
+      <div class="empty">
+        <span class="empty-eb">Drafts</span>
+        <h3 class="empty-h">Start writing.</h3>
+        <button class="empty-act">+ New draft</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h3 class="eb">Indicator dot · status row</h3>
+      <div class="ind-row">
+        <span class="ind"><span class="ind-dot"></span>YouTube · connected</span>
+        <span class="ind"><span class="ind-dot"></span>Instagram · connected</span>
+        <span class="ind"><span class="ind-dot warn"></span>TikTok · token expires 6d</span>
+        <span class="ind"><span class="ind-dot danger"></span>X · auth failed</span>
+        <span class="ind"><span class="ind-dot muted"></span>LinkedIn · not connected</span>
+      </div>
+    </div>
+  </div>
+</body></html>

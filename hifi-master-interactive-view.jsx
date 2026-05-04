@@ -807,7 +807,7 @@ function MasterCornerMenu() {
     };
   }, [open]);
 
-  function MenuItem({ label, hint, onClick, isStatic }) {
+  function MenuItem({ label, hint, onClick, isStatic, icon }) {
     const [h, setH] = React.useState(false);
     const tone = isStatic ? 'var(--fg-tertiary)' : (h ? 'var(--accent-primary-press)' : 'var(--fg-primary)');
     return (
@@ -843,7 +843,10 @@ function MasterCornerMenu() {
           letterSpacing: '0.005em',
           transition: `background 180ms ${MV_EASE_OUT_EXPO}, color 180ms ${MV_EASE_OUT_EXPO}`,
         }}>
-        <span>{label}</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+          {icon ? icon : null}
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</span>
+        </span>
         {hint ? (
           <span style={{
             fontFamily: MV_C.mono,
@@ -906,6 +909,22 @@ function MasterCornerMenu() {
           <MenuItem label="Switch to Layout view" onClick={() => setMode('layout')} />
           <MenuItem label="Toggle live mode" hint="⌘\\" onClick={() => toggleMode()} />
           <MenuItem label="Tweaks" onClick={() => { window.location.href = 'tweaks.html'; }} />
+          <MenuItem
+            label="Design System · reference"
+            icon={(
+              <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true" style={{ flexShrink: 0 }}>
+                <rect x="2" y="2" width="3" height="3" fill="currentColor" fillOpacity="0.7" />
+                <rect x="7" y="2" width="3" height="3" fill="currentColor" fillOpacity="0.7" />
+                <rect x="2" y="7" width="3" height="3" fill="currentColor" fillOpacity="0.7" />
+                <rect x="7" y="7" width="3" height="3" fill="currentColor" fillOpacity="0.7" />
+              </svg>
+            )}
+            onClick={() => {
+              if (window.HF_DesignSystemOverlay && typeof window.HF_DesignSystemOverlay.open === 'function') {
+                window.HF_DesignSystemOverlay.open();
+              }
+            }}
+          />
           <span style={{ height: 1, background: 'var(--border-subtle)', margin: '4px 4px' }} />
           <MenuItem label="Press ? for shortcuts" isStatic />
         </div>

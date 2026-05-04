@@ -1,0 +1,215 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Social posts</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--fg-primary);padding:32px}
+  .stage{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+  .eb-row{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--fg-primary);padding-top:10px;margin-bottom:6px}
+  .eb{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+
+  /* Common card */
+  .post{background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column}
+  .post-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border-subtle);font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .src-glyph{display:inline-flex;align-items:center;gap:6px}
+  .glyph{width:18px;height:18px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-weight:700;font-size:9px;color:var(--fg-on-accent)}
+  .yt{background:#7a3a24}.ig{background:#5a371f}.tt{background:#1a1815}.x{background:#5c5a55}
+
+  /* Thumbnail */
+  .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,#5a371f 0%,#a07346 60%,#e8dcc8 100%);position:relative}
+  .thumb.short{aspect-ratio:9/16;background:linear-gradient(165deg,#1a1815 0%,#5a371f 60%,#806750 100%)}
+  .thumb.square{aspect-ratio:1/1;background:linear-gradient(135deg,#806750 0%,#a07346 100%)}
+  .thumb-overlay{position:absolute;left:10px;bottom:10px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.06em;color:#f1efe9;background:rgba(26,24,21,0.7);padding:3px 6px;border-radius:3px}
+  .thumb-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#f1efe9;opacity:.85}
+  .thumb-play svg{width:38px;height:38px}
+
+  .post-body{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .post-title{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:18px;letter-spacing:-.02em;line-height:1.18;color:var(--fg-primary);margin:0}
+  .post-caption{font-family:var(--font-sans);font-size:13px;line-height:1.5;color:var(--fg-secondary);margin:0;max-width:46ch}
+  .post-channel{font-family:var(--font-sans);font-size:12.5px;font-weight:600;color:var(--fg-primary)}
+  .post-meta{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase}
+
+  /* Stat strip */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border-subtle);background:var(--surface-1)}
+  .stat{padding:10px 12px;border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;gap:2px}
+  .stat:last-child{border-right:none}
+  .stat-v{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:13px;font-weight:600;color:var(--fg-primary);letter-spacing:.02em}
+  .stat-l{font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .stat-d{font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:.04em}
+  .stat-d.up{color:var(--tone-success)}
+  .stat-d.down{color:var(--tone-danger)}
+
+  /* Score badge */
+  .score-badge{display:inline-flex;align-items:baseline;gap:3px;padding:2px 8px;border-radius:4px;background:var(--accent-soft);color:var(--accent-primary-press);font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+  .score-badge .n{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:14px;line-height:1}
+  .score-badge .d{font-size:10px;color:var(--accent-primary-press);opacity:.7}
+
+  /* Comment row */
+  .comment{padding:10px 14px;border-top:1px solid var(--border-subtle);display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:start}
+  .c-av{width:22px;height:22px;border-radius:50%;background:var(--surface-3);color:var(--fg-secondary);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-weight:700;font-size:9px;text-transform:uppercase}
+  .c-handle{font-family:var(--font-sans);font-size:12px;font-weight:600;color:var(--fg-primary)}
+  .c-text{font-family:var(--font-serif);font-style:italic;font-size:13px;line-height:1.4;color:var(--fg-primary);letter-spacing:-.005em;margin-top:2px}
+  .c-age{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;color:var(--fg-tertiary);text-transform:uppercase}
+
+  /* Compact list row */
+  .list-row{display:grid;grid-template-columns:60px 1fr auto;gap:12px;padding:10px 0;align-items:center;border-top:1px solid var(--border-subtle)}
+  .list-thumb{width:60px;height:60px;border-radius:6px;background:linear-gradient(135deg,#5a371f 0%,#a07346 100%)}
+  .list-thumb.cold{background:linear-gradient(135deg,#1a1815,#5c5a55)}
+  .list-title{font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:14px;letter-spacing:-.01em;color:var(--fg-primary);line-height:1.3}
+  .list-meta{font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+</style></head>
+<body>
+  <div class="stage">
+    <div class="eb-row"><span class="eb">Social posts · 6 patterns × 4 sources</span><span class="eb">YT · IG · TT · X</span></div>
+
+    <!-- YouTube long-form -->
+    <div class="post">
+      <div class="post-head">
+        <span class="src-glyph"><span class="glyph yt">YT</span>YouTube · long-form</span>
+        <span class="score-badge"><span class="n">86</span><span class="d">/100</span></span>
+      </div>
+      <div class="thumb">
+        <div class="thumb-play"><svg viewBox="0 0 38 38"><circle cx="19" cy="19" r="18" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M15 12 L26 19 L15 26 Z" fill="currentColor"/></svg></div>
+        <span class="thumb-overlay">14:22</span>
+      </div>
+      <div class="post-body">
+        <h3 class="post-title">Eight breaths down to the wreck floor.</h3>
+        <p class="post-caption">A first-person freedive into Truk Lagoon's Fujikawa Maru — no music, just breath and ambient.</p>
+        <div class="post-meta"><span>PUBLISHED MON 09:00</span><span>4D AGO</span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="stat-v">128K</span><span class="stat-l">Views</span><span class="stat-d up">+22%</span></div>
+        <div class="stat"><span class="stat-v">14.2K</span><span class="stat-l">Likes</span><span class="stat-d up">+9%</span></div>
+        <div class="stat"><span class="stat-v">2,840</span><span class="stat-l">Saves</span><span class="stat-d up">+340%</span></div>
+        <div class="stat"><span class="stat-v">312</span><span class="stat-l">Comments</span><span class="stat-d up">+18%</span></div>
+      </div>
+    </div>
+
+    <!-- Instagram square -->
+    <div class="post">
+      <div class="post-head">
+        <span class="src-glyph"><span class="glyph ig">IG</span>Instagram · feed</span>
+        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:var(--fg-tertiary)">CAROUSEL · 5</span>
+      </div>
+      <div class="thumb square">
+        <span class="thumb-overlay" style="left:auto;right:10px">1 / 5</span>
+      </div>
+      <div class="post-body">
+        <span class="post-channel">@henryunderwater</span>
+        <p class="post-caption" style="margin-top:0"><em style="font-style:italic;color:var(--fg-primary)">Negotiating with the surface.</em> Five frames from the wreck floor — slide for the eight-breath count.</p>
+        <div class="post-meta"><span>2D AGO</span><span>42K REACH</span></div>
+      </div>
+      <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat"><span class="stat-v">8.4K</span><span class="stat-l">Likes</span><span class="stat-d up">+12%</span></div>
+        <div class="stat"><span class="stat-v">1,210</span><span class="stat-l">Saves</span><span class="stat-d up">+44%</span></div>
+        <div class="stat"><span class="stat-v">94</span><span class="stat-l">Shares</span><span class="stat-d flat" style="color:var(--fg-tertiary)">flat</span></div>
+      </div>
+    </div>
+
+    <!-- TikTok / Short -->
+    <div class="post">
+      <div class="post-head">
+        <span class="src-glyph"><span class="glyph tt">TT</span>TikTok · short</span>
+        <span class="score-badge" style="background:var(--tone-warning-bg);color:var(--tone-warning)"><span class="n" style="color:var(--tone-warning)">52</span><span class="d" style="color:var(--tone-warning)">/100</span></span>
+      </div>
+      <div class="thumb short">
+        <div class="thumb-play"><svg viewBox="0 0 38 38"><circle cx="19" cy="19" r="18" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M15 12 L26 19 L15 26 Z" fill="currentColor"/></svg></div>
+        <span class="thumb-overlay">0:18</span>
+      </div>
+      <div class="post-body">
+        <p class="post-caption" style="font-size:14px;color:var(--fg-primary)">Eight breaths. That's the line.</p>
+        <div class="post-meta"><span>1D AGO</span><span style="color:var(--tone-danger)">CADENCE COLLAPSED</span></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="stat-v">42K</span><span class="stat-l">Views</span><span class="stat-d down">−38%</span></div>
+        <div class="stat"><span class="stat-v">2,140</span><span class="stat-l">Likes</span><span class="stat-d down">−24%</span></div>
+        <div class="stat"><span class="stat-v">71%</span><span class="stat-l">Avg watch</span><span class="stat-d up">+4%</span></div>
+        <div class="stat"><span class="stat-v">31</span><span class="stat-l">Saves</span><span class="stat-d down">−12%</span></div>
+      </div>
+    </div>
+
+    <!-- X / Twitter post -->
+    <div class="post">
+      <div class="post-head">
+        <span class="src-glyph"><span class="glyph x">X</span>X · text</span>
+        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:var(--fg-tertiary)">THREAD · 4 / 4</span>
+      </div>
+      <div class="post-body" style="padding:18px">
+        <span class="post-channel">@henryunderwater <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);font-weight:500;margin-left:4px">· 6h</span></span>
+        <p class="post-caption" style="font-family:var(--font-serif);font-style:italic;font-size:15px;color:var(--fg-primary);line-height:1.45;margin:0">"The first eight breaths are the only ones that matter. Past that, your body learns the cold; before, you're still negotiating with the surface."</p>
+        <p class="post-caption" style="margin-top:0">— from the Truk Lagoon dispatch. Full piece up tomorrow.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="stat-v">7.4K</span><span class="stat-l">Impressions</span><span class="stat-d up">+18%</span></div>
+        <div class="stat"><span class="stat-v">412</span><span class="stat-l">Likes</span><span class="stat-d up">+6%</span></div>
+        <div class="stat"><span class="stat-v">88</span><span class="stat-l">Reposts</span><span class="stat-d up">+44%</span></div>
+        <div class="stat"><span class="stat-v">14</span><span class="stat-l">Replies</span><span class="stat-d flat" style="color:var(--fg-tertiary)">flat</span></div>
+      </div>
+    </div>
+
+    <!-- Comment block -->
+    <div class="post" style="grid-column:span 2">
+      <div class="post-head">
+        <span class="src-glyph"><span class="glyph yt">YT</span>Comments · Truk Lagoon</span>
+        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:var(--fg-tertiary)">312 TOTAL · 3 NEED REPLY</span>
+      </div>
+      <div class="comment">
+        <span class="c-av" style="background:var(--accent-primary);color:var(--fg-on-accent)">RK</span>
+        <div>
+          <span class="c-handle">@reefkid_07</span>
+          <span class="c-text">"eight breaths down is the line of the year"</span>
+        </div>
+        <span class="c-age">2M</span>
+      </div>
+      <div class="comment">
+        <span class="c-av">DB</span>
+        <div>
+          <span class="c-handle">@deepblue_42</span>
+          <span class="c-text">"how do you keep your lights from flooding at depth?"</span>
+        </div>
+        <span class="c-age">14M</span>
+      </div>
+      <div class="comment">
+        <span class="c-av">FD</span>
+        <div>
+          <span class="c-handle">@frankie_dive</span>
+          <span class="c-text">"do you actually freedive or use a tank in this one?"</span>
+        </div>
+        <span class="c-age">28M</span>
+      </div>
+    </div>
+
+    <!-- Compact library row -->
+    <div class="post">
+      <div class="post-head">
+        <span>Library row · compact</span>
+        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:var(--fg-tertiary)">3 ITEMS</span>
+      </div>
+      <div style="padding:6px 14px 14px">
+        <div class="list-row" style="border-top:none">
+          <div class="list-thumb"></div>
+          <div>
+            <div class="list-title">Eight breaths down to the wreck floor</div>
+            <div class="list-meta">YT · 14:22 · 128K · SCORE 86</div>
+          </div>
+          <span class="score-badge"><span class="n">86</span><span class="d">/100</span></span>
+        </div>
+        <div class="list-row">
+          <div class="list-thumb cold"></div>
+          <div>
+            <div class="list-title">Cold door · pull-quote thread</div>
+            <div class="list-meta">IG · CAROUSEL · 42K · SCORE 72</div>
+          </div>
+          <span class="score-badge"><span class="n">72</span><span class="d">/100</span></span>
+        </div>
+        <div class="list-row">
+          <div class="list-thumb" style="background:linear-gradient(135deg,#1a1815,#5a371f)"></div>
+          <div>
+            <div class="list-title">Eight-breath cut · auto-short</div>
+            <div class="list-meta">TT · 0:18 · 42K · SCORE 52</div>
+          </div>
+          <span class="score-badge" style="background:var(--tone-warning-bg);color:var(--tone-warning)"><span class="n" style="color:var(--tone-warning)">52</span><span class="d" style="color:var(--tone-warning)">/100</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body></html>

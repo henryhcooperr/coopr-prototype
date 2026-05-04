@@ -1,0 +1,122 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Composer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,ital,wght@7..72,0,400;7..72,0,600;7..72,1,400;7..72,1,500;7..72,1,600&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;padding:32px;background:#fbfaf6;font-family:'Inter Tight',system-ui,sans-serif;color:#1a1815}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .col{display:flex;flex-direction:column;gap:14px}
+  .eb-row{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #1a1815;padding-top:10px}
+  .eb{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:#8a8782}
+
+  /* Composer */
+  .composer{background:#fefdf9;border:1px solid #d8d3c4;border-radius:16px;padding:14px 16px 12px;display:flex;flex-direction:column;gap:12px;position:relative}
+  .scope-row{display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:#8a8782}
+  .model{display:inline-flex;align-items:center;gap:4px;color:#8a8782;letter-spacing:.04em}
+  .dot{width:6px;height:6px;border-radius:50%;background:#5a371f}
+  .input{font-family:'Literata',serif;font-style:italic;font-size:16px;color:#1a1815;line-height:1.4;min-height:36px;background:transparent;border:none;outline:none;width:100%;resize:none}
+  .input.empty{color:#8a8782}
+  .controls{display:flex;align-items:center;gap:8px}
+  .add{height:28px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;border:1px solid #ebe7dc;border-radius:14px;background:#fbfaf6;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5c5a55}
+  .send{margin-left:auto;width:32px;height:32px;border-radius:50%;background:#5a371f;color:#fdfcf9;border:none;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+
+  /* Scope popover */
+  .pop{background:#fefdf9;border:1px solid #d8d3c4;border-radius:10px;padding:6px 0;width:280px;box-shadow:0 12px 28px -16px rgba(26,24,21,0.22),0 2px 6px -3px rgba(26,24,21,0.08)}
+  .pop-head{padding:6px 14px 4px;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8a8782}
+  .pop-item{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;font-family:'Inter Tight',sans-serif;font-size:13px;color:#1a1815}
+  .pop-item.active{background:#f5f3ec}
+  .pop-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8a8782;letter-spacing:.04em}
+
+  /* Suggestion provocations */
+  .provoc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .provoc{padding:14px 16px;background:#fefdf9;border:1px solid #ebe7dc;border-radius:8px;text-align:left}
+  .provoc-eb{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:#8a8782;margin-bottom:6px}
+  .provoc-body{font-family:'Literata',serif;font-style:italic;font-size:15px;font-weight:500;letter-spacing:-.01em;color:#1a1815;line-height:1.35}
+
+  .caption .cap-eb{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8782;margin-bottom:6px}
+  .caption .cap-lit{font-family:'Literata',serif;font-style:italic;font-weight:500;font-size:17px;letter-spacing:-.018em;line-height:1.25;color:#1a1815;margin:0 0 8px}
+  .caption .cap-body{font-family:'Inter Tight',sans-serif;font-size:13px;line-height:1.5;color:#5c5a55;margin:0;max-width:46ch}
+  .caption .cap-rule{height:1px;background:#1a1815;margin-bottom:8px}
+
+  .stack{display:flex;flex-direction:column;gap:24px}
+</style></head>
+<body>
+  <div class="grid">
+    <div class="col">
+      <div class="eb-row"><span class="eb">Composer · Default</span><span class="eb">@HOME · ALL PROJECTS</span></div>
+      <div class="composer">
+        <div class="scope-row">
+          <span>@HOME · ALL PROJECTS</span>
+          <span class="model"><span class="dot"></span>COOPR · OPUS</span>
+        </div>
+        <div class="input empty">Ask Coopr to draft, score, or pull a quote.</div>
+        <div class="controls">
+          <span class="add">+ ADD</span>
+          <span class="add">SCORING</span>
+          <span class="add">LIBRARY</span>
+          <button class="send">↑</button>
+        </div>
+      </div>
+
+      <div class="eb-row" style="margin-top:8px"><span class="eb">Composer · Filled</span><span class="eb">SCOPE: @TRUK LAGOON</span></div>
+      <div class="composer">
+        <div class="scope-row">
+          <span>@TRUK LAGOON · PILLAR ONE</span>
+          <span class="model"><span class="dot"></span>COOPR · OPUS</span>
+        </div>
+        <div class="input">Tighten the Truk Lagoon hook — the eight-breaths phrase should land twice; second mention is the payoff.</div>
+        <div class="controls">
+          <span class="add">+ ADD</span>
+          <span class="add">SCORING</span>
+          <span class="add">LIBRARY</span>
+          <button class="send">↑</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="eb-row"><span class="eb">Scope popover · click scope label</span><span class="eb">5 SCOPES</span></div>
+      <div class="pop">
+        <div class="pop-head">Workspaces</div>
+        <div class="pop-item active"><span>@Home</span><span class="pop-meta">ALL PROJECTS</span></div>
+        <div class="pop-head">Projects</div>
+        <div class="pop-item"><span>@Truk Lagoon</span><span class="pop-meta">PILLAR ONE · 4 POSTS</span></div>
+        <div class="pop-item"><span>@Cold Door</span><span class="pop-meta">PILLAR TWO · 7 POSTS</span></div>
+        <div class="pop-head">Sources</div>
+        <div class="pop-item"><span>@Library</span><span class="pop-meta">47 INDEXED</span></div>
+        <div class="pop-item"><span>@Inbox</span><span class="pop-meta">24 OPEN · 3 NEEDS REPLY</span></div>
+      </div>
+
+      <div class="eb-row" style="margin-top:8px"><span class="eb">Suggestion provocations</span><span class="eb">2×2 GRID</span></div>
+      <div class="provoc-grid">
+        <div class="provoc"><div class="provoc-eb">DRAFT</div><div class="provoc-body">Tighten the Truk Lagoon hook — eight-breaths phrase land twice.</div></div>
+        <div class="provoc"><div class="provoc-eb">SCORE</div><div class="provoc-body">Score the two safety variants against last month's top quartile.</div></div>
+        <div class="provoc"><div class="provoc-eb">PULL</div><div class="provoc-body">Pull a quote from Cold Door for the pillar-two thread.</div></div>
+        <div class="provoc"><div class="provoc-eb">REVIEW</div><div class="provoc-body">What's flatlining on Instagram — and is it worth fixing?</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption" style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+    <div>
+      <div class="cap-rule"></div>
+      <div class="cap-eb">Composer · anatomy</div>
+      <h2 class="cap-lit">Scope eyebrow + italic input + control cluster.</h2>
+      <p class="cap-body">Mono-caps scope eyebrow top-left, mono model cluster top-right, Literata italic input mid, attachment chips + cocoa send disc bottom. Border <code>--border-default</code>, radius <code>--radius-xl</code> (16px). No shadow — flat editorial elevation.</p>
+    </div>
+    <div>
+      <div class="cap-rule"></div>
+      <div class="cap-eb">Scope popover</div>
+      <h2 class="cap-lit">Click scope to retarget. <span style="color:#8a8782">Workspaces · Projects · Sources.</span></h2>
+      <p class="cap-body">Anchored above the composer. Three groups (Workspaces, Projects, Sources) with mono-caps headers; active scope gets <code>--surface-2</code> wash. Right-aligned mono meta shows post counts or status. <em>Not a search</em> — a scope picker.</p>
+    </div>
+    <div>
+      <div class="cap-rule"></div>
+      <div class="cap-eb">Suggestion provocations</div>
+      <h2 class="cap-lit">Quick-fire prompts. <span style="color:#8a8782">2×2 grid below composer.</span></h2>
+      <p class="cap-body">Each provocation is mono-caps verb (DRAFT · SCORE · PULL · REVIEW) over an italic Literata one-liner. Click sends the prompt directly. Used on Home cold-state and below the composer in active threads.</p>
+    </div>
+  </div>
+</body></html>

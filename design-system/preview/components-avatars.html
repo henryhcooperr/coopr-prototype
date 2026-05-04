@@ -1,0 +1,127 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Avatars</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--fg-primary);padding:32px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .eb-row{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--fg-primary);padding-top:10px;margin-bottom:14px}
+  .eb{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .card{background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:18px;margin-bottom:24px}
+
+  /* Avatar primitives */
+  .av{display:inline-flex;align-items:center;justify-content:center;background:var(--surface-ink);color:var(--fg-on-ink);font-family:var(--font-sans);font-weight:700;letter-spacing:.02em;text-transform:uppercase;flex-shrink:0;overflow:hidden}
+  .av-sq{border-radius:var(--radius-sm)}
+  .av-rd{border-radius:50%}
+  .av-xs{width:20px;height:20px;font-size:9px}
+  .av-sm{width:24px;height:24px;font-size:10px}
+  .av-md{width:32px;height:32px;font-size:12px}
+  .av-lg{width:40px;height:40px;font-size:14px}
+  .av-xl{width:56px;height:56px;font-size:18px}
+
+  /* Variants */
+  .av.coopr{background:var(--surface-ink);color:var(--fg-on-ink)}
+  .av.user{background:var(--accent-primary);color:var(--fg-on-accent)}
+  .av.muted{background:var(--surface-3);color:var(--fg-secondary)}
+  .av.ring{box-shadow:inset 0 0 0 2px var(--accent-soft)}
+  .av img{width:100%;height:100%;object-fit:cover;display:block}
+  .av .stripe{width:100%;height:100%;background:linear-gradient(135deg,#5a371f 0%,#a07346 100%)}
+
+  .row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .row .lbl{font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase;min-width:60px}
+
+  /* Identity row (avatar + label + meta) */
+  .id-row{display:flex;align-items:center;gap:12px}
+  .id-name{font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--fg-primary);line-height:1.2}
+  .id-handle{font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);letter-spacing:.04em;margin-top:2px}
+  .id-block{display:flex;flex-direction:column;min-width:0}
+
+  /* Stack */
+  .stack{display:inline-flex}
+  .stack .av{margin-left:-6px;box-shadow:0 0 0 2px var(--surface-1)}
+  .stack .av:first-child{margin-left:0}
+
+  /* Authoring presence */
+  .pres{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase}
+  .pres-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-primary);box-shadow:0 0 0 2px var(--surface-1),0 0 0 3px var(--accent-soft)}
+
+  /* Brand mark */
+  .brand{display:inline-flex;align-items:center;gap:10px}
+  .brand-mark{width:24px;height:24px;background:var(--surface-ink);color:var(--fg-on-ink);border-radius:var(--radius-sm);font-family:var(--font-sans);font-weight:700;font-size:11px;display:inline-flex;align-items:center;justify-content:center;letter-spacing:.02em}
+  .brand-word{font-family:var(--font-sans);font-weight:700;font-size:13px;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-primary)}
+
+  /* Sources */
+  .src-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .src{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--border-subtle);border-radius:6px;background:var(--surface-1)}
+  .src-glyph{width:22px;height:22px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-weight:700;font-size:11px;color:var(--fg-on-accent)}
+  .src-yt{background:#7a3a24}
+  .src-ig{background:#5a371f}
+  .src-tt{background:#1a1815}
+  .src-x{background:#5c5a55}
+  .src-meta{font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .src-name{font-family:var(--font-sans);font-size:12.5px;font-weight:500;color:var(--fg-primary)}
+</style></head>
+<body>
+  <div class="eb-row"><span class="eb">Identity · avatars · brand · sources</span><span class="eb">5 SIZES · 2 SHAPES · STACKING</span></div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h3 class="eb">Avatar · sizes (square = brand · round = person)</h3>
+        <div class="row"><span class="lbl">XS · 20</span><span class="av av-sq av-xs coopr">C</span><span class="av av-rd av-xs user">HC</span><span class="av av-rd av-xs muted">RK</span></div>
+        <div class="row"><span class="lbl">SM · 24</span><span class="av av-sq av-sm coopr">C</span><span class="av av-rd av-sm user">HC</span><span class="av av-rd av-sm muted">RK</span></div>
+        <div class="row"><span class="lbl">MD · 32</span><span class="av av-sq av-md coopr">C</span><span class="av av-rd av-md user">HC</span><span class="av av-rd av-md muted">RK</span></div>
+        <div class="row"><span class="lbl">LG · 40</span><span class="av av-sq av-lg coopr">C</span><span class="av av-rd av-lg user">HC</span><span class="av av-rd av-lg muted">RK</span></div>
+        <div class="row"><span class="lbl">XL · 56</span><span class="av av-sq av-xl coopr">C</span><span class="av av-rd av-xl user">HC</span><span class="av av-rd av-xl muted">RK</span></div>
+      </div>
+
+      <div class="card">
+        <h3 class="eb">Identity rows · the canonical pairing</h3>
+        <div class="id-row"><span class="av av-sq av-md coopr">C</span><div class="id-block"><span class="id-name">Coopr</span><span class="id-handle">AGENT · OPUS</span></div></div>
+        <div class="id-row"><span class="av av-rd av-md user">HC</span><div class="id-block"><span class="id-name">Henry Cooper</span><span class="id-handle">@henryunderwater · YOU</span></div></div>
+        <div class="id-row"><span class="av av-rd av-md ring"><span class="stripe"></span></span><div class="id-block"><span class="id-name">@reefkid_07</span><span class="id-handle">3.2K SUBSCRIBERS · COMMENTED 2M AGO</span></div></div>
+      </div>
+
+      <div class="card">
+        <h3 class="eb">Stacked · collaborators</h3>
+        <div class="row">
+          <div class="stack">
+            <span class="av av-rd av-md user">HC</span>
+            <span class="av av-rd av-md muted">RK</span>
+            <span class="av av-rd av-md ring"><span class="stripe"></span></span>
+            <span class="av av-rd av-md muted" style="background:var(--surface-2);color:var(--fg-tertiary)">+3</span>
+          </div>
+          <span class="lbl" style="min-width:auto">6 watchers on this draft</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3 class="eb">Brand mark · type-on-ink</h3>
+        <div class="row" style="gap:32px">
+          <span class="brand"><span class="brand-mark">C</span><span class="brand-word">Coopr</span></span>
+          <span class="brand"><span class="brand-mark" style="width:32px;height:32px;font-size:14px">C</span><span class="brand-word" style="font-size:18px;letter-spacing:.12em">Coopr</span></span>
+        </div>
+        <p class="body" style="margin:0;font-size:12.5px">Inter Tight 700, +0.10em tracking. The "C" mark is type-on-ink (no outline glyph). Used on chrome, identity rows, and as the agent avatar.</p>
+      </div>
+
+      <div class="card">
+        <h3 class="eb">Authoring presence · who is here</h3>
+        <div class="pres"><span class="pres-dot"></span>Coopr · drafting</div>
+        <div class="pres"><span class="pres-dot" style="background:var(--tone-success)"></span>You · editing block-014</div>
+        <div class="pres"><span class="pres-dot" style="background:var(--border-default);box-shadow:0 0 0 2px var(--surface-1),0 0 0 3px var(--surface-3)"></span>Auto-publish · paused</div>
+      </div>
+
+      <div class="card">
+        <h3 class="eb">Source glyphs · platform identity</h3>
+        <div class="src-grid">
+          <div class="src"><span class="src-glyph src-yt">YT</span><span class="src-name">YouTube</span><span class="src-meta">128K SUBS</span></div>
+          <div class="src"><span class="src-glyph src-ig">IG</span><span class="src-name">Instagram</span><span class="src-meta">42K</span></div>
+          <div class="src"><span class="src-glyph src-tt">TT</span><span class="src-name">TikTok</span><span class="src-meta">18K</span></div>
+          <div class="src"><span class="src-glyph src-x">X</span><span class="src-name">X / Twitter</span><span class="src-meta">7.4K</span></div>
+        </div>
+        <p class="body" style="margin:0;font-size:12.5px">Two-letter mono caps over a flat ink surface. No platform logos or color systems imported — every channel reads in the same cocoa-on-paper register.</p>
+      </div>
+    </div>
+  </div>
+</body></html>

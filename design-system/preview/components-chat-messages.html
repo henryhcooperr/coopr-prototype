@@ -1,0 +1,151 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Chat messages</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--fg-primary);padding:32px}
+  .stage{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+  .eb-row{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--fg-primary);padding-top:10px}
+  .eb{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+
+  /* Turn frame */
+  .turn{display:grid;grid-template-columns:72px 1fr;gap:14px;padding:6px 0}
+  .role{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary);padding-top:6px;display:flex;align-items:center;gap:8px}
+  .role .av{width:20px;height:20px;border-radius:var(--radius-sm);background:var(--surface-ink);color:var(--fg-on-ink);font-family:var(--font-sans);font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+  .role .av.user{background:var(--accent-primary);color:var(--fg-on-accent);border-radius:50%}
+  .body{display:flex;flex-direction:column;gap:8px;min-width:0}
+
+  /* User turn — bubble */
+  .bubble{align-self:flex-start;background:var(--surface-2);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:10px 14px;font-family:var(--font-sans);font-size:14px;line-height:1.5;color:var(--fg-primary);max-width:60ch}
+
+  /* Coopr turn — prose */
+  .prose{font-family:var(--font-sans);font-size:14.5px;line-height:1.6;color:var(--fg-primary);max-width:60ch}
+  .prose em{font-style:italic;color:var(--fg-secondary)}
+
+  /* System turn */
+  .system{display:flex;align-items:center;gap:10px;padding:6px 0;font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);letter-spacing:.06em;text-transform:uppercase}
+  .system::before,.system::after{content:"";flex:1;height:1px;background:var(--border-subtle)}
+
+  /* Reasoning trail */
+  .reason{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:var(--surface-2);border:1px solid var(--border-subtle);border-radius:4px;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-secondary);align-self:flex-start}
+  .reason .dot{width:6px;height:6px;border-radius:50%;background:var(--accent-primary);animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  /* Tool run citation */
+  .tool{padding:10px 12px;background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius-md);display:flex;flex-direction:column;gap:4px}
+  .tool-head{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--fg-tertiary)}
+  .tool-name{color:var(--accent-primary)}
+  .tool-input{font-family:var(--font-mono);font-size:11.5px;color:var(--fg-secondary);line-height:1.4}
+
+  /* Citation block */
+  .cite{padding:10px 14px;border-left:2px solid var(--accent-primary);background:var(--surface-2);border-radius:0 6px 6px 0;display:flex;flex-direction:column;gap:4px}
+  .cite-q{font-family:var(--font-serif);font-style:italic;font-weight:500;font-size:14px;line-height:1.4;color:var(--fg-primary);letter-spacing:-.005em}
+  .cite-from{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-tertiary)}
+
+  /* Action footer */
+  .footer{display:flex;gap:2px;align-items:center;padding-top:6px;flex-wrap:wrap}
+  .chip{height:24px;padding:0 9px;border-radius:4px;font-family:var(--font-sans);font-size:11.5px;font-weight:500;color:var(--fg-secondary);background:transparent;border:none;display:inline-flex;align-items:center;gap:5px;cursor:pointer}
+  .chip:hover{background:var(--surface-2)}
+  .chip-div{width:1px;height:13px;background:var(--border-subtle);margin:0 3px}
+
+  /* Error turn */
+  .err{padding:10px 14px;background:var(--tone-danger-bg);border:1px solid var(--tone-danger);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:13px;color:var(--tone-danger);line-height:1.45}
+  .err strong{font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;display:block;margin-bottom:4px}
+
+  /* Streaming caret */
+  .caret{display:inline-block;width:8px;height:14px;background:var(--accent-primary);margin-left:2px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  /* Inline scope tag in stream */
+  .scope{display:inline-flex;align-items:center;gap:4px;padding:1px 7px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border-subtle);font-family:var(--font-serif);font-style:italic;font-size:13px;color:var(--fg-primary)}
+  .scope .at{font-family:var(--font-mono);font-style:normal;font-size:9.5px;font-weight:700;color:var(--fg-tertiary);letter-spacing:.04em}
+</style></head>
+<body>
+  <div class="stage">
+    <div class="eb-row"><span class="eb">Chat messages · turn primitives</span><span class="eb">USER · COOPR · SYSTEM · TOOL · ERROR</span></div>
+
+    <!-- USER -->
+    <div class="turn">
+      <div class="role"><span class="av user">HC</span>You</div>
+      <div class="body">
+        <div class="bubble">Score the two safety variants against last month's top quartile. Also check Truk Lagoon's hook against the eight-breath phrase.</div>
+      </div>
+    </div>
+
+    <!-- REASONING -->
+    <div class="turn">
+      <div class="role"><span class="av">C</span>Coopr</div>
+      <div class="body">
+        <span class="reason"><span class="dot"></span>Reading 47 posts · pillar map · last 30 days</span>
+      </div>
+    </div>
+
+    <!-- TOOL -->
+    <div class="turn">
+      <div class="role"><span class="av">C</span>Coopr</div>
+      <div class="body">
+        <div class="tool">
+          <div class="tool-head"><span class="tool-name">SCORE_VARIANTS</span><span>RAN IN 2.4S</span></div>
+          <div class="tool-input">scope = <span class="scope"><span class="at">@</span>Truk Lagoon</span> · variants = [A, B] · benchmark = top_quartile · period = 30d</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COOPR PROSE + CITATION -->
+    <div class="turn">
+      <div class="role"><span class="av">C</span>Coopr</div>
+      <div class="body">
+        <p class="prose">Variant A scores <strong>78</strong> — above last month's median of 64. Variant B scores 52 — wrong audience cue. Pinning A to <span class="scope"><span class="at">@</span>Truk Lagoon</span>. <em>The eight-breaths phrase carries; trim the third pick.</em></p>
+        <div class="cite">
+          <span class="cite-q">"eight breaths down is the line of the year"</span>
+          <span class="cite-from">@reefkid_07 · TRUK LAGOON / YT · 2M AGO</span>
+        </div>
+        <div class="footer">
+          <button class="chip">↻ Regenerate</button>
+          <span class="chip-div"></span>
+          <button class="chip">⎘ Copy</button>
+          <button class="chip">+ Save to Library</button>
+          <span style="flex:1"></span>
+          <button class="chip" style="color:var(--fg-tertiary)">Helpful</button>
+          <button class="chip" style="color:var(--fg-tertiary)">Off</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STREAMING -->
+    <div class="turn">
+      <div class="role"><span class="av">C</span>Coopr</div>
+      <div class="body">
+        <p class="prose">Trimming the third pick now — the audience cue lands cleaner without it<span class="caret"></span></p>
+      </div>
+    </div>
+
+    <!-- SYSTEM -->
+    <div class="system">Switched scope · @Truk Lagoon · Pillar one</div>
+
+    <!-- USER WITH SCOPE TAG -->
+    <div class="turn">
+      <div class="role"><span class="av user">HC</span>You</div>
+      <div class="body">
+        <div class="bubble">Pull a quote from <span class="scope"><span class="at">@</span>Cold Door</span> for the pillar-two thread. Keep it under 18 words.</div>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+    <div class="turn">
+      <div class="role"><span class="av">C</span>Coopr</div>
+      <div class="body">
+        <div class="err">
+          <strong>Source unavailable</strong>
+          The Cold Door transcript hasn't finished indexing — back online in ~2 minutes. I'll retry then, or you can pin a different source.
+        </div>
+        <div class="footer">
+          <button class="chip">↻ Retry now</button>
+          <button class="chip">Pick another source</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="eb-row" style="margin-top:14px"><span class="eb">Anatomy</span><span class="eb">72PX ROLE GUTTER · 60CH BODY · COCOA AVATARS</span></div>
+    <p class="body" style="font-size:13px;line-height:1.55">Every turn is a 72px mono-caps role gutter beside a body column capped at 60ch. <strong>You</strong> bubbles use surface-2 fills; <strong>Coopr</strong> writes in prose, never in a bubble. Reasoning, tool runs, citations, errors and streaming carets all stack vertically inside one turn body — no horizontal layout. System notes are full-width mono-caps dividers.</p>
+  </div>
+</body></html>
