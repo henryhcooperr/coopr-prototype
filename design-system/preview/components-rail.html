@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Side Rail</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--fg-primary)}
+  .wrap{display:flex;height:280px}
+  .rail{width:220px;background:#fefdf9;border-right:1px solid #ebe7dc;padding:18px 8px;display:flex;flex-direction:column;gap:2px}
+  .lbl{font-family:var(--font-mono);font-size:10px;color:#8a8782;text-transform:uppercase;letter-spacing:.1em;font-weight:600;padding:0 10px 8px}
+  .item{height:30px;padding:0 10px;display:flex;align-items:center;gap:10px;border-radius:4px;font-size:13px;color:#5c5a55;font-weight:500}
+  .item.active{background:#f5f3ec;color:#1a1815;font-weight:600}
+  .item .meta{margin-left:auto;font-family:var(--font-mono);font-size:11px;color:#8a8782}
+  .ico{width:14px;height:14px;color:#8a8782}
+  .item.active .ico{color:#1a1815}
+  .canvas{flex:1;padding:24px 32px}
+  .eb{font-family:var(--font-mono);font-size:10.5px;color:#8a8782;text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+  .lit{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:32px;letter-spacing:-.03em;line-height:1.06;color:#1a1815;margin:8px 0 0}
+  .tail{color:#8a8782}
+</style></head>
+<body><div class="wrap">
+  <nav class="rail">
+    <div class="lbl">Workspace</div>
+    <div class="item"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7l6-5 6 5v7H2z"/></svg>Home</div>
+    <div class="item active"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M5.5 5h5M5.5 8h5M5.5 11h3"/></svg>Docs<span class="meta">7</span></div>
+    <div class="item"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="12" height="8" rx="1"/><path d="M6 4v8M10 4v8"/></svg>Clip Lab</div>
+    <div class="item"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13l4-6 3 4 5-7"/></svg>Insights</div>
+    <div class="item"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6h12"/></svg>Library</div>
+  </nav>
+  <div class="canvas">
+    <div class="eb">Docs · 7 Projects</div>
+    <h2 class="lit">The drafting set. <span class="tail">A few in motion.</span></h2>
+  </div>
+</div></body></html>

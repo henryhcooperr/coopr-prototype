@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Elevation · Flat</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--bg-base);font-family:var(--font-sans);color:var(--fg-primary)}
+  .wrap{padding:24px 28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .card{background:var(--surface-1);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:18px;min-height:90px;display:flex;flex-direction:column;justify-content:space-between}
+  .eb{font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+  .lit{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:18px;letter-spacing:-.02em;color:var(--fg-primary);margin:6px 0 10px}
+  .meta{font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);letter-spacing:.04em}
+  .hover{border-color:var(--border-default);background:var(--surface-1)}
+  .pressed{background:var(--surface-2);border-color:var(--border-default)}
+</style></head>
+<body><div class="wrap">
+  <div class="card"><span class="eb">Default</span><div class="lit">Border-only.</div><span class="meta">surface-1 · border-subtle · shadow none</span></div>
+  <div class="card hover"><span class="eb">Hover</span><div class="lit">Border tint.</div><span class="meta">border-default · 120ms ease-out</span></div>
+  <div class="card pressed"><span class="eb">Pressed</span><div class="lit">Bg shifts down.</div><span class="meta">surface-2 · no scale</span></div>
+</div></body></html>

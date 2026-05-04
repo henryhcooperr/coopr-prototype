@@ -1,0 +1,184 @@
+/* COOPR · colors_and_type.css
+   Mirror of hifi.css :root tokens — the editorial-magazine palette
+   (warm-paper surfaces, cocoa single-hue depth, moss accent option).
+   Source of truth: hifi.css. Update both in lockstep.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Literata:opsz,ital,wght@7..72,0,400;7..72,0,500;7..72,0,600;7..72,0,700;7..72,1,400;7..72,1,500;7..72,1,600&family=Inter+Tight:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,0,600;6..72,1,400;6..72,1,500&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ── Surfaces — warm-paper ladder, no white-on-white ───────── */
+  --bg-base:     #fbfaf6;   /* page bg, warmest ivory */
+  --surface-1:   #fefdf9;   /* cards, vessels, panels */
+  --surface-2:   #f5f3ec;   /* hover, secondary, embeds */
+  --surface-3:   #ece9df;   /* input fields, pressed */
+  --surface-ink: #1a1815;   /* inverse — toasts, brand mark */
+
+  /* ── Foreground — cocoa single-hue, no dark gray ───────────── */
+  --fg-primary:    #1a1815;
+  --fg-secondary:  #5c5a55;
+  --fg-tertiary:   #8a8782;
+  --fg-on-accent:  #fdfcf9;
+  --fg-on-ink:     #f1efe9;
+
+  /* ── Borders ───────────────────────────────────────────────── */
+  --border-subtle:  #ebe7dc;
+  --border-default: #d8d3c4;
+  --border-strong:  #b3aea2;
+
+  /* ── Accent · Single Hue Depth (cocoa-only, R8 v3 lock) ────── */
+  --accent-primary:        #5a371f;
+  --accent-primary-hover:  #48291a;
+  --accent-primary-press:  #371e13;
+  --accent-soft:           #e8dcc8;
+  --accent-ring:           rgba(90, 55, 31, 0.25);
+
+  /* Optional accent variant: moss — set [data-accent="moss"] on root */
+  --accent-moss:           #5b7a4c;
+  --accent-moss-soft:      #e3ebdc;
+
+  /* ── Tone — every tone is a cocoa shade, depth via value ───── */
+  --tone-success:    #5a4a26;
+  --tone-success-bg: #e8e2d1;
+  --tone-warning:    #a07346;
+  --tone-warning-bg: #f0e3d4;
+  --tone-info:       #806750;
+  --tone-info-bg:    #ece4dc;
+  --tone-danger:     #7a3a24;
+  --tone-danger-bg:  #eed8d0;
+
+  /* ── Type families ─────────────────────────────────────────── */
+  --font-sans:  'Inter Tight', 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+  --font-serif: 'Literata', 'Newsreader', 'Charter', 'Iowan Old Style', Georgia, serif;
+  --font-mono:  'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  /* ── Type scale (px) ───────────────────────────────────────── */
+  --text-xs:   12px;
+  --text-sm:   13px;
+  --text-base: 14px;
+  --text-md:   16px;
+  --text-lg:   18px;
+  --text-xl:   22px;
+  --text-2xl:  28px;
+  --text-3xl:  36px;
+  --text-4xl:  48px;
+
+  /* ── Spacing ───────────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-8:  48px;
+  --space-12: 72px;
+
+  /* ── Radius ────────────────────────────────────────────────── */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  20px;
+
+  /* ── Shadow — flat editorial. Cards live by border alone. ──── */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+
+  /* ── Motion ────────────────────────────────────────────────── */
+  --ease-entry:  cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-exit:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast:    120ms;
+  --dur-base:    250ms;
+  --dur-slow:    320ms;
+}
+
+/* ── Semantic role styles ───────────────────────────────────── */
+
+/* Editorial italic headline — the COOPR signature */
+.h1, .headline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: var(--text-4xl);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--fg-primary);
+}
+
+.h2 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: var(--text-3xl);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--fg-primary);
+}
+
+.h3 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: var(--text-2xl);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--fg-primary);
+}
+
+/* Italic continuation tail — fg-tertiary, same family */
+.tail {
+  color: var(--fg-tertiary);
+  font-style: italic;
+}
+
+/* Body — UI sans, max 60ch for editorial paragraphs */
+.body, p {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--fg-secondary);
+  max-width: 60ch;
+}
+
+/* Eyebrow — mono caps, tracked */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--fg-tertiary);
+}
+
+/* Dateline / right-meta — mono regular */
+.dateline {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-tertiary);
+}
+
+/* Tabular figures — every digit display */
+.num, .tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+code, .code {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--fg-primary);
+  background: var(--surface-2);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+}
+
+/* Small UI label — sans, no caps */
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--fg-secondary);
+}

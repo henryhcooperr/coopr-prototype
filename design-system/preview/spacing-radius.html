@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Radius · Scale</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--surface-1);font-family:var(--font-sans);color:var(--fg-primary)}
+  .wrap{padding:22px 28px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  .col{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .swatch{width:88px;height:64px;background:var(--surface-2);border:1px solid var(--border-default)}
+  .lbl{font-family:var(--font-mono);font-size:10.5px;color:var(--fg-tertiary);text-transform:uppercase;letter-spacing:.08em;text-align:center;line-height:1.4}
+  .lbl b{display:block;color:var(--fg-primary);font-weight:600}
+</style></head>
+<body><div class="wrap">
+  <div class="col"><div class="swatch" style="border-radius:4px"></div><span class="lbl"><b>sm</b>4 px</span></div>
+  <div class="col"><div class="swatch" style="border-radius:8px"></div><span class="lbl"><b>md</b>8 px</span></div>
+  <div class="col"><div class="swatch" style="border-radius:12px"></div><span class="lbl"><b>lg</b>12 px</span></div>
+  <div class="col"><div class="swatch" style="border-radius:16px"></div><span class="lbl"><b>xl</b>16 px</span></div>
+  <div class="col"><div class="swatch" style="border-radius:20px"></div><span class="lbl"><b>2xl</b>20 px</span></div>
+</div></body></html>

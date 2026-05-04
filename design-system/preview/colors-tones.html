@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Colors · Tones</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--surface-1);font-family:var(--font-sans);color:var(--fg-primary)}
+  .wrap{padding:18px 22px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .sw{border:1px solid var(--border-subtle);border-radius:var(--radius-md);overflow:hidden}
+  .stack{display:flex}
+  .a,.b{flex:1;height:60px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+  .meta{padding:8px 10px;font-family:var(--font-mono);font-size:10px;color:var(--fg-secondary);line-height:1.5;letter-spacing:.04em}
+  .meta b{display:block;color:var(--fg-primary);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+</style></head>
+<body><div class="wrap">
+  <div class="sw"><div class="stack"><div class="a" style="background:#e8e2d1;color:#5a4a26">SUCCESS</div><div class="b" style="background:#5a4a26;color:#fdfcf9">5a4a26</div></div><div class="meta"><b>Success</b>tone + bg</div></div>
+  <div class="sw"><div class="stack"><div class="a" style="background:#f0e3d4;color:#a07346">WARNING</div><div class="b" style="background:#a07346;color:#fdfcf9">a07346</div></div><div class="meta"><b>Warning</b>tone + bg</div></div>
+  <div class="sw"><div class="stack"><div class="a" style="background:#ece4dc;color:#806750">INFO</div><div class="b" style="background:#806750;color:#fdfcf9">806750</div></div><div class="meta"><b>Info</b>tone + bg</div></div>
+  <div class="sw"><div class="stack"><div class="a" style="background:#eed8d0;color:#7a3a24">DANGER</div><div class="b" style="background:#7a3a24;color:#fdfcf9">7a3a24</div></div><div class="meta"><b>Danger</b>tone + bg</div></div>
+</div></body></html>

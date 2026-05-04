@@ -1,0 +1,19 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Editorial Rule</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--surface-1);font-family:var(--font-sans);color:var(--fg-primary)}
+  .wrap{padding:22px 28px;display:flex;flex-direction:column;gap:18px}
+  .lbl{font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:6px}
+  .rule{height:1px;background:#1a1815}
+  .thick{height:3px;background:#1a1815}
+  .double{height:6px;border-top:1px solid #1a1815;border-bottom:1px solid #1a1815}
+  .hair{height:1px;background:#ebe7dc}
+  .group{display:flex;flex-direction:column}
+</style></head>
+<body><div class="wrap">
+  <div class="group"><div class="lbl">Hairline · border-subtle</div><div class="hair"></div></div>
+  <div class="group"><div class="lbl">Editorial single rule</div><div class="rule"></div></div>
+  <div class="group"><div class="lbl">Editorial thick rule</div><div class="thick"></div></div>
+  <div class="group"><div class="lbl">Editorial double rule</div><div class="double"></div></div>
+</div></body></html>

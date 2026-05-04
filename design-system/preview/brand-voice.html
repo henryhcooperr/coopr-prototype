@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Brand · Voice</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--surface-1);font-family:var(--font-sans);color:var(--fg-primary)}
+  .wrap{padding:22px 28px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .col{display:flex;flex-direction:column;gap:8px}
+  .lbl{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+  .yes{color:#5a4a26}
+  .no{color:#7a3a24}
+  .quote{font-family:var(--font-serif);font-style:italic;font-size:15px;line-height:1.4;letter-spacing:-.01em;color:var(--fg-primary);padding:6px 0}
+  .quote.bad{color:var(--fg-tertiary);text-decoration:line-through;text-decoration-color:#7a3a24}
+  .rule{height:1px;background:currentColor;margin-bottom:4px}
+</style></head>
+<body><div class="wrap">
+  <div class="col"><span class="lbl yes">Yes — producer voice</span><div class="rule yes" style="background:#5a4a26"></div>
+    <div class="quote">"Tightened hook 3 — kept the picks alone."</div>
+    <div class="quote">"Eight-breaths phrase should land twice."</div>
+    <div class="quote">"Indexed for retrieval — won't shape it unless asked."</div>
+  </div>
+  <div class="col"><span class="lbl no">No — chatbot tells</span><div class="rule" style="background:#7a3a24"></div>
+    <div class="quote bad">"Hi there! I'd love to help with that!"</div>
+    <div class="quote bad">"Great question! Let me break this down."</div>
+    <div class="quote bad">"Hope this helps! Let's get started!"</div>
+  </div>
+</div></body></html>

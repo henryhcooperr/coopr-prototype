@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>COOPR · Design System Reference</title>
+  <link rel="stylesheet" href="colors_and_type.css" />
+  <style>
+    body { margin: 0; background: var(--bg-base); color: var(--fg-primary); font-family: var(--font-sans); }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 64px 28px; }
+    .eyebrow { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase; color: var(--fg-tertiary); margin-bottom: 14px; }
+    h1 { font-family: var(--font-serif); font-style: italic; font-weight: 600; font-size: 48px; line-height: 1.06; letter-spacing: -0.035em; margin: 0 0 12px; }
+    .lede { font-family: var(--font-serif); font-style: italic; font-size: 18px; color: var(--fg-tertiary); margin-bottom: 36px; line-height: 1.4; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .grid section { padding-top: 10px; padding-bottom: 18px; }
+    .grid h2 { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-tertiary); margin: 0 0 8px; padding-top: 18px; border-top: 1px solid var(--border-subtle); grid-column: 1 / -1; }
+    a { display: block; padding: 12px 14px; background: var(--surface-1); border: 1px solid var(--border-subtle); border-radius: 8px; text-decoration: none; color: var(--fg-primary); transition: background 120ms, border-color 120ms; }
+    a:hover { background: var(--surface-2); border-color: var(--border-default); }
+    a strong { display: block; font-family: var(--font-serif); font-style: italic; font-size: 16px; font-weight: 600; line-height: 1.2; margin-bottom: 4px; }
+    a span { display: block; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--fg-tertiary); }
+    .meta { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--border-subtle); font-family: var(--font-mono); font-size: 10px; color: var(--fg-tertiary); }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="eyebrow">Design System · Reference Pages</div>
+    <h1>Tokens, type, components.</h1>
+    <p class="lede">Imported from Claude Design 2026-05-04. Each card is a standalone HTML page rendered against the canonical tokens (<code>colors_and_type.css</code>).</p>
+
+    <div class="grid">
+      <h2>Brand</h2>
+      <a href="preview/brand-wordmark.html"><strong>Wordmark</strong><span>brand · wordmark</span></a>
+      <a href="preview/brand-iconography.html"><strong>Iconography</strong><span>brand · icons</span></a>
+      <a href="preview/brand-imagery.html"><strong>Imagery</strong><span>brand · imagery</span></a>
+      <a href="preview/brand-voice.html"><strong>Voice</strong><span>brand · voice</span></a>
+
+      <h2>Color</h2>
+      <a href="preview/colors-surfaces.html"><strong>Surfaces</strong><span>color · surfaces</span></a>
+      <a href="preview/colors-foreground.html"><strong>Foreground</strong><span>color · foreground</span></a>
+      <a href="preview/colors-accent.html"><strong>Accent</strong><span>color · accent</span></a>
+      <a href="preview/colors-tones.html"><strong>Tones</strong><span>color · tones</span></a>
+
+      <h2>Type</h2>
+      <a href="preview/type-headline.html"><strong>Headline</strong><span>type · editorial italic</span></a>
+      <a href="preview/type-eyebrow.html"><strong>Eyebrow</strong><span>type · mono caps</span></a>
+      <a href="preview/type-body-mono.html"><strong>Body & mono</strong><span>type · body</span></a>
+      <a href="preview/type-scale.html"><strong>Scale</strong><span>type · scale</span></a>
+
+      <h2>Spacing</h2>
+      <a href="preview/spacing-scale.html"><strong>Scale</strong><span>spacing · scale</span></a>
+      <a href="preview/spacing-elevation.html"><strong>Elevation</strong><span>spacing · elevation</span></a>
+      <a href="preview/spacing-radius.html"><strong>Radius</strong><span>spacing · radius</span></a>
+
+      <h2>Components</h2>
+      <a href="preview/components-buttons.html"><strong>Buttons</strong><span>components · buttons</span></a>
+      <a href="preview/components-card.html"><strong>Card</strong><span>components · card</span></a>
+      <a href="preview/components-input.html"><strong>Input</strong><span>components · input</span></a>
+      <a href="preview/components-rail.html"><strong>Rail</strong><span>components · rail</span></a>
+      <a href="preview/components-rules.html"><strong>Rules</strong><span>components · rules</span></a>
+      <a href="preview/components-tags.html"><strong>Tags</strong><span>components · tags</span></a>
+      <a href="preview/components-topbar.html"><strong>Topbar</strong><span>components · topbar</span></a>
+    </div>
+
+    <div class="meta">
+      Source: claude.ai/design 2026-05-04 · Bundle archived at data/handoff-archive/2026-05-04-claude-design-system/ · See INBOUND-NOTES.md for what we accepted vs rejected
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Colors · Foreground</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--surface-1);font-family:var(--font-sans);color:var(--fg-primary)}
+  .wrap{padding:22px 28px;display:flex;flex-direction:column;gap:14px}
+  .row{display:grid;grid-template-columns:24px 1fr auto;gap:16px;align-items:center}
+  .dot{width:24px;height:24px;border-radius:6px;border:1px solid var(--border-subtle)}
+  .nm{font-family:var(--font-sans);font-size:14px;font-weight:500}
+  .hex{font-family:var(--font-mono);font-size:11px;color:var(--fg-tertiary);letter-spacing:.04em}
+  .demo{font-family:var(--font-serif);font-style:italic;font-weight:600;font-size:18px;letter-spacing:-.02em;margin-left:14px}
+</style></head>
+<body><div class="wrap">
+  <div class="row"><div class="dot" style="background:#1a1815"></div><span class="nm" style="color:#1a1815">fg-primary <span class="demo" style="color:#1a1815">Headlines</span></span><span class="hex">#1a1815</span></div>
+  <div class="row"><div class="dot" style="background:#5c5a55"></div><span class="nm" style="color:#5c5a55">fg-secondary <span class="demo" style="color:#5c5a55">Body</span></span><span class="hex">#5c5a55</span></div>
+  <div class="row"><div class="dot" style="background:#8a8782"></div><span class="nm" style="color:#8a8782">fg-tertiary <span class="demo" style="color:#8a8782">Italic tails &amp; meta</span></span><span class="hex">#8a8782</span></div>
+</div></body></html>

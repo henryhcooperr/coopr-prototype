@@ -1,0 +1,21 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Components · Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body{margin:0;background:var(--surface-1);font-family:var(--font-sans);color:var(--fg-primary)}
+  .wrap{padding:24px 28px;display:flex;flex-direction:column;gap:18px}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .btn{height:32px;padding:0 12px;border-radius:8px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent;font-family:inherit;cursor:default}
+  .primary{background:#5a371f;color:#fdfcf9}
+  .secondary{background:#fefdf9;border-color:#d8d3c4;color:#1a1815}
+  .ghost{background:transparent;color:#5c5a55}
+  .sm{height:28px;padding:0 10px;font-size:12px}
+  .pill{height:24px;padding:0 10px;border-radius:999px;background:#e8dcc8;color:#371e13;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center}
+  .lbl{font-family:var(--font-mono);font-size:10px;color:var(--fg-tertiary);text-transform:uppercase;letter-spacing:.1em;width:90px;font-weight:600}
+</style></head>
+<body><div class="wrap">
+  <div class="row"><span class="lbl">Primary</span><button class="btn primary">Score variants</button><button class="btn primary sm">Tighten</button></div>
+  <div class="row"><span class="lbl">Secondary</span><button class="btn secondary">Pull a quote</button><button class="btn secondary sm">Pin</button></div>
+  <div class="row"><span class="lbl">Ghost</span><button class="btn ghost">Cancel</button><button class="btn ghost sm">Skip</button></div>
+  <div class="row"><span class="lbl">Mono pill</span><span class="pill">Pro</span><span class="pill">Drafting · v3</span></div>
+</div></body></html>
