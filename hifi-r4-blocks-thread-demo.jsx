@@ -1,5 +1,6 @@
 /* global React, window, HfShell, Icon, getBlockMeta, Eyebrow */
 /* global R4BStreamingText, R4BReasoningTrail, R4BToolRun, R4BDemoControls, R4BComposer, R4BDataEntryState, R4BLatencySteps, R4GOutcomeRail, R4GOutcomePackage, R4GOutcomeReceipt, R4GDraftReceipt */
+/* global Frame, HF_R4B_RESOLVE_ENTITY */
 /* hifi-r4-blocks-thread-demo.jsx — playable in-thread composition proof. */
 
 const R4B_CHAT_BEATS = [
@@ -661,6 +662,30 @@ function HF_R4B_ThreadDemo() {
                 <div className="r4bd-turn-body">
                   <R4GOutcomeRail active="receipt" compact title="Outcome complete" right="receipt saved" />
                   {window.R4GDraftReceipt ? <R4GDraftReceipt compact /> : <R4GOutcomeReceipt compact />}
+                </div>
+              </section>
+            )}
+            {step >= total && window.HF_R4B_RESOLVE_ENTITY && window.Frame && (
+              <section className="r4bd-turn" data-role="Coopr" data-demo-lifecycle="1">
+                <div className="r4bd-turn-role">
+                  <div>Coopr</div>
+                  <div className="num" style={{ marginTop: 5, fontSize: 9 }}>lifecycle</div>
+                </div>
+                <div className="r4bd-turn-body">
+                  <p className="r4bd-turn-copy" style={{ margin: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: 14, color: 'var(--fg-secondary)', lineHeight: 1.5 }}>
+                    Resolving the account, then I'll pull their last 90 days. Composer locks while the run is in flight.
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+                    <Frame
+                      id="RES-01"
+                      name="Sync · @chilis.creations"
+                      purpose="Pulling profile + last 90 days of reels."
+                      target="LIBRARY"
+                      span={12}
+                      initialState="running"
+                    />
+                    <HF_R4B_RESOLVE_ENTITY />
+                  </div>
                 </div>
               </section>
             )}
